@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Bougies artisanales naturelles – commandez en ligne !">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bougies naturelles</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #fff8f0;
+      color: #333;
+      padding: 2em;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+    }
+    .product {
+      padding: 1em;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      margin: 2em 0;
+      background: white;
+    }
+    button {
+      background: #f6a623;
+      color: white;
+      border: none;
+      padding: 1em 2em;
+      border-radius: 6px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bougies Naturelles</h1>
+    <p>Fabriquées à la main, avec amour 💛</p>
+
+    <div class="product">
+      <h2>Bougie Vanille</h2>
+      <p>15,00 €</p>
+
+      <!-- BOUTON PAIEMENT STRIPE -->
+      <form action="https://buy.stripe.com/test_XXXXXXXXXXXXXX" method="GET">
+        <button type="submit">Acheter par carte</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
