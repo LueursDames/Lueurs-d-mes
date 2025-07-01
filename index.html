@@ -4,191 +4,133 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lueur d’Âmes - Boutique de Bougies</title>
-  <style>
-    /* Reset simple */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+ <style>
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #3c2870;
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
 
-    body {
-      background: #2e1a47; /* violet profond */
-      color: #f2e9f7; /* clair, douceur */
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+  /* Menu bouton + liste déroulante verticale */
+  .menu-wrapper {
+    position: relative;
+  }
+  #menuBtn {
+    background: #5a4099;
+    border: none;
+    color: #f2e9f7;
+    padding: 0.4rem 1rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    user-select: none;
+  }
+  #menuBtn:hover {
+    background: #7a56d1;
+  }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background: #3c2870;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
+  .menu-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #462f85;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+    min-width: 180px;
+    padding: 0.5rem 0;
+  }
+  .menu-list ul {
+    list-style: none;
+  }
+  .menu-list li {
+    margin: 0;
+  }
+  .menu-list button.category-btn {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #d6b8ff;
+    padding: 0.6rem 1.2rem;
+    text-align: left;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .menu-list button.category-btn:hover,
+  .menu-list button.category-btn.active {
+    background: #7a56d1;
+    color: white;
+  }
 
-    /* Menu déroulant catégorie */
-    .menu-categories {
-      position: relative;
-    }
-    .menu-categories select {
-      padding: 0.4rem 1rem;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: none;
-      background: #5a4099;
-      color: #f2e9f7;
-      cursor: pointer;
-    }
-    .menu-categories select:hover {
-      background: #7a56d1;
-    }
+  /* Nom marque centré */
+  .brand-name {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #bb8cff;
+    user-select: none;
+    text-shadow: 0 0 6px #d0a9ff88;
+    flex: 1;
+    text-align: center;
+  }
 
-    /* Icones compte + panier */
-    .header-icons {
-      display: flex;
-      gap: 1.5rem;
-      align-items: center;
-      font-size: 1.2rem;
-      cursor: pointer;
-      position: relative;
-    }
-    .header-icons .icon {
-      color: #d6b8ff;
-      position: relative;
-    }
-    /* Badge compteur panier */
-    .header-icons .icon.cart::after {
-      content: attr(data-count);
-      position: absolute;
-      top: -8px;
-      right: -10px;
-      background: #ff4081;
-      color: white;
-      font-size: 0.7rem;
-      padding: 2px 6px;
-      border-radius: 50%;
-      display: none;
-    }
-    .header-icons .icon.cart[data-count]:not([data-count="0"])::after {
-      display: block;
-    }
-
-    main {
-      flex: 1;
-      padding: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 2rem;
-    }
-
-    .product-card {
-      background: #462f85;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.3s ease;
-    }
-    .product-card:hover {
-      transform: translateY(-5px);
-    }
-
-    .product-name {
-      font-weight: 700;
-      font-size: 1.2rem;
-      margin-bottom: 0.3rem;
-      color: #c8a2ff;
-    }
-
-    .product-desc {
-      font-size: 0.9rem;
-      margin-bottom: 0.8rem;
-      line-height: 1.3;
-      color: #ddd6ff;
-    }
-
-    .product-scent {
-      font-style: italic;
-      font-size: 0.85rem;
-      margin-bottom: 1rem;
-      color: #b9a1ff;
-    }
-
-    .quantity-wrapper {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    .quantity-wrapper input {
-      width: 50px;
-      padding: 0.3rem;
-      border-radius: 6px;
-      border: none;
-      text-align: center;
-      font-size: 1rem;
-      margin-left: 0.5rem;
-    }
-
-    .add-to-cart-btn {
-      background: #9a6cff;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      padding: 0.8rem 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.25s ease;
-    }
-    .add-to-cart-btn:hover {
-      background: #bb8cff;
-    }
-
-    /* Popup message d'erreur ou succès */
-    #message {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #7e56d1cc;
-      color: white;
-      padding: 1rem 2rem;
-      border-radius: 10px;
-      font-weight: 700;
-      display: none;
-      z-index: 2000;
-    }
-  </style>
+  /* Header icons (compte + panier) à droite */
+  .header-icons {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    font-size: 1.4rem;
+    cursor: pointer;
+    position: relative;
+  }
+  .header-icons .icon {
+    color: #d6b8ff;
+    position: relative;
+  }
+  .header-icons .icon.cart::after {
+    content: attr(data-count);
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: #ff4081;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 50%;
+    display: none;
+  }
+  .header-icons .icon.cart[data-count]:not([data-count="0"])::after {
+    display: block;
+  }
+</style>
 </head>
 <body>
-  <header>
-    <div class="menu-categories">
-      <select id="categorySelect">
-        <option value="lueur">Gamme Lueur d’Âmes</option>
-        <!-- Plus tard tu peux ajouter d'autres options -->
-      </select>
-    </div>
-    <div class="header-icons">
-      <div class="icon account" title="Mon compte" aria-label="Mon compte">
-        👤
-      </div>
-      <div class="icon cart" title="Panier" aria-label="Panier" data-count="0" id="cartCount">
-        🛒
-      </div>
-    </div>
-  </header>
+ <header>
+  <div class="menu-wrapper">
+    <button id="menuBtn" aria-haspopup="true" aria-expanded="false" aria-controls="menuList">
+      Menu ▼
+    </button>
+    <nav id="menuList" class="menu-list" hidden>
+      <ul>
+        <li><button class="category-btn" data-category="all">Toutes les bougies</button></li>
+        <li><button class="category-btn" data-category="lueur">Gamme Lueur d’Âmes</button></li>
+        <!-- ajoute d'autres catégories ici -->
+      </ul>
+    </nav>
+  </div>
+
+  <div class="brand-name" aria-label="Nom de la marque">Lueurs d'Âmes</div>
+
+  <div class="header-icons">
+    <div class="icon account" title="Mon compte" aria-label="Mon compte">👤</div>
+    <div class="icon cart" title="Panier" aria-label="Panier" data-count="0" id="cartCount">🛒</div>
+  </div>
+</header>
 
   <main>
     <div class="products-grid" id="productsGrid">
@@ -407,6 +349,65 @@
     displayProducts();
     updateCartCount();
     addCheckoutButton();
+    // Gérer l’ouverture/fermeture du menu
+  const menuBtn = document.getElementById('menuBtn');
+  const menuList = document.getElementById('menuList');
+  let menuOpen = false;
+
+  menuBtn.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    menuList.hidden = !menuOpen;
+    menuBtn.setAttribute('aria-expanded', menuOpen);
+  });
+
+  // Fermer menu si clic en dehors
+  document.addEventListener('click', (e) => {
+    if (!menuBtn.contains(e.target) && !menuList.contains(e.target)) {
+      menuOpen = false;
+      menuList.hidden = true;
+      menuBtn.setAttribute('aria-expanded', false);
+    }
+  });
+
+  // Filtrer les produits selon catégorie
+  const categoryButtons = document.querySelectorAll('.category-btn');
+
+  categoryButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      categoryButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cat = btn.dataset.category;
+      filterProducts(cat);
+
+      // Fermer menu après choix
+      menuOpen = false;
+      menuList.hidden = true;
+      menuBtn.setAttribute('aria-expanded', false);
+    });
+  });
+
+  // Modifie la fonction displayProducts pour filtre par catégorie
+  function filterProducts(category) {
+    productsGrid.innerHTML = '';
+
+    let filteredProducts;
+    if(category === 'all') {
+      filteredProducts = products;
+    } else {
+      // Ici on filtre par catégorie, pour l’instant on a qu’une catégorie 'lueur'
+      // Tu peux ajouter une propriété category dans tes produits pour gérer ça proprement
+      filteredProducts = products.filter(p => p.id.startsWith(category));
+    }
+
+    filteredProducts.forEach(p => {
+      productsGrid.appendChild(createProductCard(p));
+    });
+  }
+
+  // Initialisation (après que la fonction filterProducts soit déclarée)
+  filterProducts('all');
+  updateCartCount();
   </script>
 </body>
 </html>
