@@ -3,123 +3,305 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lueur d’Âmes - Boutique de Bougies</title>
- <style>
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #3c2870;
-    padding: 1rem 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
+  <title>Lueurs d'Âmes - Bougies à Messages Prédictifs</title>
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9f7fd;
+      color: #3c2870;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-  /* Menu bouton + liste déroulante verticale */
-  .menu-wrapper {
-    position: relative;
-  }
-  #menuBtn {
-    background: #5a4099;
-    border: none;
-    color: #f2e9f7;
-    padding: 0.4rem 1rem;
-    font-size: 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    user-select: none;
-  }
-  #menuBtn:hover {
-    background: #7a56d1;
-  }
+    /* HEADER */
+    header {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #3c2870;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      color: #f2e9f7;
+    }
+    .menu-wrapper {
+      position: relative;
+    }
+    #menuBtn {
+      background: #5a4099;
+      border: none;
+      color: #f2e9f7;
+      padding: 0.4rem 1rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      user-select: none;
+      transition: background-color 0.3s;
+    }
+    #menuBtn:hover {
+      background: #7a56d1;
+    }
+    .menu-list {
+      position: absolute;
+      top: 110%;
+      left: 0;
+      background: #462f85;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+      min-width: 180px;
+      padding: 0.5rem 0;
+      z-index: 1500;
+    }
+    .menu-list ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .menu-list li {
+      margin: 0;
+    }
+    .menu-list button.category-btn {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: #d6b8ff;
+      padding: 0.6rem 1.2rem;
+      text-align: left;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .menu-list button.category-btn:hover,
+    .menu-list button.category-btn.active {
+      background: #7a56d1;
+      color: white;
+    }
+    .brand-name {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #bb8cff;
+      user-select: none;
+      text-shadow: 0 0 6px #d0a9ff88;
+      flex: 1;
+      text-align: center;
+    }
+    .header-icons {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      font-size: 1.4rem;
+      cursor: pointer;
+      position: relative;
+    }
+    .header-icons .icon {
+      color: #d6b8ff;
+      position: relative;
+      user-select: none;
+    }
+    .header-icons .icon.cart::after {
+      content: attr(data-count);
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background: #ff4081;
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 50%;
+      display: none;
+      pointer-events: none;
+    }
+    .header-icons .icon.cart[data-count]:not([data-count="0"])::after {
+      display: block;
+    }
 
-  .menu-list {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: #462f85;
-    border-radius: 0 0 10px 10px;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.5);
-    min-width: 180px;
-    padding: 0.5rem 0;
-  }
-  .menu-list ul {
-    list-style: none;
-  }
-  .menu-list li {
-    margin: 0;
-  }
-  .menu-list button.category-btn {
-    width: 100%;
-    background: transparent;
-    border: none;
-    color: #d6b8ff;
-    padding: 0.6rem 1.2rem;
-    text-align: left;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  .menu-list button.category-btn:hover,
-  .menu-list button.category-btn.active {
-    background: #7a56d1;
-    color: white;
-  }
+    /* PRODUITS */
+    main {
+      width: 100%;
+      max-width: 1200px;
+      padding: 2rem 1rem;
+      flex: 1;
+    }
+    #productsGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+      gap: 1.8rem;
+    }
+    .product-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(60,40,112,0.1);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(60,40,112,0.2);
+    }
+    .product-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+      color: #4b3285;
+    }
+    .product-description {
+      font-size: 0.9rem;
+      color: #6e5a9a;
+      margin-bottom: 0.8rem;
+      flex-grow: 1;
+    }
+    .product-price {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #7a56d1;
+      margin-bottom: 1rem;
+    }
+    .quantity-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+    .quantity-wrapper label {
+      font-weight: 600;
+      color: #3c2870;
+    }
+    .quantity-wrapper input[type="number"] {
+      width: 60px;
+      padding: 0.3rem 0.5rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    .add-to-cart-btn {
+      background: #7a56d1;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .add-to-cart-btn:hover {
+      background: #5a4099;
+    }
 
-  /* Nom marque centré */
-  .brand-name {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: #bb8cff;
-    user-select: none;
-    text-shadow: 0 0 6px #d0a9ff88;
-    flex: 1;
-    text-align: center;
-  }
+    /* PANIER */
+    #cartModal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.3);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+    #cartModal.active {
+      display: flex;
+    }
+    #cartContent {
+      background: white;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 0 20px rgba(60,40,112,0.3);
+      display: flex;
+      flex-direction: column;
+    }
+    #cartContent h2 {
+      margin-top: 0;
+      color: #3c2870;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    .cart-item {
+      border-bottom: 1px solid #ddd;
+      padding: 0.8rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+    .cart-item-name {
+      font-weight: 600;
+      color: #4b3285;
+      flex: 1;
+    }
+    .cart-item-qty {
+      margin-left: 1rem;
+      color: #7a56d1;
+      font-weight: 700;
+    }
+    #closeCartBtn {
+      background: #7a56d1;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      align-self: flex-end;
+      margin-top: 1rem;
+      font-weight: 700;
+    }
+    #closeCartBtn:hover {
+      background: #5a4099;
+    }
 
-  /* Header icons (compte + panier) à droite */
-  .header-icons {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-    font-size: 1.4rem;
-    cursor: pointer;
-    position: relative;
-  }
-  .header-icons .icon {
-    color: #d6b8ff;
-    position: relative;
-  }
-  .header-icons .icon.cart::after {
-    content: attr(data-count);
-    position: absolute;
-    top: -8px;
-    right: -10px;
-    background: #ff4081;
-    color: white;
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 50%;
-    display: none;
-  }
-  .header-icons .icon.cart[data-count]:not([data-count="0"])::after {
-    display: block;
-  }
-</style>
+    /* Responsive */
+    @media (max-width: 600px) {
+      header {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+      }
+      .brand-name {
+        order: 2;
+        flex-basis: 100%;
+        text-align: center;
+      }
+      .menu-wrapper {
+        order: 1;
+      }
+      .header-icons {
+        order: 3;
+      }
+      #productsGrid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
- <header>
+
+<header>
   <div class="menu-wrapper">
     <button id="menuBtn" aria-haspopup="true" aria-expanded="false" aria-controls="menuList">
       Menu ▼
     </button>
     <nav id="menuList" class="menu-list" hidden>
       <ul>
-        <li><button class="category-btn" data-category="all">Toutes les bougies</button></li>
+        <li><button class="category-btn active" data-category="all">Toutes les bougies</button></li>
         <li><button class="category-btn" data-category="lueur">Gamme Lueur d’Âmes</button></li>
-        <!-- ajoute d'autres catégories ici -->
       </ul>
     </nav>
   </div>
@@ -132,228 +314,196 @@
   </div>
 </header>
 
-  <main>
-    <div class="products-grid" id="productsGrid">
-      <!-- Les produits seront injectés ici -->
-    </div>
-  </main>
+<main>
+  <div id="productsGrid" aria-live="polite" aria-label="Liste des bougies"></div>
+</main>
 
-  <div id="message"></div>
+<!-- Modal Panier -->
+<div id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+  <div id="cartContent">
+    <h2 id="cartTitle">Votre Panier</h2>
+    <div id="cartItems"></div>
+    <button id="closeCartBtn" aria-label="Fermer le panier">Fermer</button>
+  </div>
+</div>
 
-  <script>
-    // URL de ton backend Vercel (remplace par ta vraie URL)
-    const BACKEND_URL = 'https://stripe-backend-8jzac1158-lueurs-dames-projects.vercel.app';
-
-    // Données produits complètes
-    const products = [
-      {
-        id: "lueur-espoir",
-        name: "Lueur d’Espoir",
-        desc: "Une bougie pour les moments de doute, offrant une lumière intérieure et un message d'encouragement.",
-        scent: "Notes d'agrumes et de menthe poivrée pour une sensation de fraîcheur et de renouveau.",
-        price_cents: 1500 // en centimes (15€)
-      },
-      {
-        id: "lueur-amour",
-        name: "Lueur d’Amour",
-        desc: "Destinée à raviver les relations, cette bougie diffuse une énergie chaleureuse et un message d'affection.",
-        scent: "Rose et vanille, pour une ambiance chaleureuse et romantique.",
-        price_cents: 1600
-      },
-      {
-        id: "lueur-serenite",
-        name: "Lueur de Sérénité",
-        desc: "Parfaite pour les instants de méditation, elle apporte calme et équilibre, accompagnée d'un message apaisant.",
-        scent: "Lavande et bois de santal, favorisant la relaxation.",
-        price_cents: 1550
-      },
-      {
-        id: "lueur-confiance",
-        name: "Lueur de Confiance",
-        desc: "Pour renforcer la confiance en soi, cette bougie inspire courage et détermination, avec un message motivant.",
-        scent: "Bois de cèdre et musc, pour une touche de force et de stabilité.",
-        price_cents: 1650
-      },
-      {
-        id: "lueur-guerison",
-        name: "Lueur de Guérison",
-        desc: "Idéale pour les périodes de transition, elle offre un message de guérison et de renouveau.",
-        scent: "Camomille et eucalyptus, pour apaiser et purifier l'esprit.",
-        price_cents: 1580
-      },
-      {
-        id: "lueur-intuition",
-        name: "Lueur d’Intuition",
-        desc: "Encourage l'écoute de son intuition, avec un message guidant vers la sagesse intérieure.",
-        scent: "Patchouli et jasmin, stimulant l'esprit et la créativité.",
-        price_cents: 1620
-      },
-      {
-        id: "lueur-inspiration",
-        name: "Lueur d’Inspiration",
-        desc: "Pour stimuler la créativité, cette bougie diffuse une énergie inspirante et un message de découverte.",
-        scent: "Fleur d'oranger et ylang-ylang, pour une ambiance florale et stimulante.",
-        price_cents: 1600
-      },
-      {
-        id: "lueur-ame",
-        name: "Lueur d’Âme",
-        desc: "La bougie phare, offrant un message profond et spirituel, invitant à la réflexion personnelle.",
-        scent: "Encens et myrrhe, pour une expérience spirituelle profonde.",
-        price_cents: 1700
-      },
-    ];
-
-    // Affichage des produits
-    const productsGrid = document.getElementById('productsGrid');
-    const cartCount = document.getElementById('cartCount');
-    const messageDiv = document.getElementById('message');
-
-    // Récupérer panier en localStorage ou init vide
-    let cart = JSON.parse(localStorage.getItem('cart')) || {};
-
-    // Met à jour le badge panier
-    function updateCartCount() {
-      const totalCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
-      cartCount.setAttribute('data-count', totalCount);
+<script>
+  // Données des produits
+  const products = [
+    {
+      id: 'lueur1',
+      name: "Lueur d’Espoir",
+      description: "Une bougie pour les moments de doute, offrant une lumière intérieure et un message d'encouragement.",
+      perfume: "Notes d'agrumes et de menthe poivrée",
+      price: 25,
+    },
+    {
+      id: 'lueur2',
+      name: "Lueur d’Amour",
+      description: "Destinée à raviver les relations, cette bougie diffuse une énergie chaleureuse et un message d'affection.",
+      perfume: "Rose et vanille",
+      price: 27,
+    },
+    {
+      id: 'lueur3',
+      name: "Lueur de Sérénité",
+      description: "Parfaite pour les instants de méditation, elle apporte calme et équilibre, accompagnée d'un message apaisant.",
+      perfume: "Lavande et bois de santal",
+      price: 26,
+    },
+    {
+      id: 'lueur4',
+      name: "Lueur de Confiance",
+      description: "Pour renforcer la confiance en soi, cette bougie inspire courage et détermination, avec un message motivant.",
+      perfume: "Bois de cèdre et musc",
+      price: 28,
+    },
+    {
+      id: 'lueur5',
+      name: "Lueur de Guérison",
+      description: "Idéale pour les périodes de transition, elle offre un message de guérison et de renouveau.",
+      perfume: "Camomille et eucalyptus",
+      price: 26,
+    },
+    {
+      id: 'lueur6',
+      name: "Lueur d’Intuition",
+      description: "Encourage l'écoute de son intuition, avec un message guidant vers la sagesse intérieure.",
+      perfume: "Patchouli et jasmin",
+      price: 27,
+    },
+    {
+      id: 'lueur7',
+      name: "Lueur d’Inspiration",
+      description: "Pour stimuler la créativité, cette bougie diffuse une énergie inspirante et un message de découverte.",
+      perfume: "Fleur d'oranger et ylang-ylang",
+      price: 29,
+    },
+    {
+      id: 'lueur8',
+      name: "Lueur d’Âme",
+      description: "La bougie phare, offrant un message profond et spirituel, invitant à la réflexion personnelle.",
+      perfume: "Encens et myrrhe",
+      price: 30,
     }
+  ];
 
-    // Affiche message temporaire
-    function showMessage(msg, duration = 3000) {
-      messageDiv.textContent = msg;
-      messageDiv.style.display = 'block';
-      setTimeout(() => {
-        messageDiv.style.display = 'none';
-      }, duration);
-    }
-
-    // Crée une carte produit HTML
-    function createProductCard(product) {
-      const card = document.createElement('div');
-      card.className = 'product-card';
-
-      card.innerHTML = `
-        <div class="product-name">${product.name}</div>
-        <div class="product-desc">${product.desc}</div>
-        <div class="product-scent"><strong>Parfum :</strong> ${product.scent}</div>
-        <div class="quantity-wrapper">
-          <label for="qty-${product.id}">Quantité :</label>
-          <input type="number" id="qty-${product.id}" min="1" value="1" />
-        </div>
-        <button class="add-to-cart-btn">Ajouter au panier - ${ (product.price_cents / 100).toFixed(2) }€</button>
-      `;
-
-      // Ajout au panier
-      const btn = card.querySelector('.add-to-cart-btn');
-      const qtyInput = card.querySelector('input');
-
-      btn.addEventListener('click', () => {
-        const qty = parseInt(qtyInput.value);
-        if (isNaN(qty) || qty < 1) {
-          showMessage('Veuillez entrer une quantité valide.');
-          return;
-        }
-
-        if(cart[product.id]) {
-          cart[product.id].quantity += qty;
-        } else {
-          cart[product.id] = {
-            product,
-            quantity: qty
-          };
-        }
-
-        localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartCount();
-        showMessage(`Ajouté ${qty} x ${product.name} au panier !`);
-      });
-
-      return card;
-    }
-
-    // Affiche tous les produits
-    function displayProducts() {
-      productsGrid.innerHTML = '';
-      products.forEach(p => {
-        productsGrid.appendChild(createProductCard(p));
-      });
-    }
-
-    // Achat complet : on récupère le panier, on construit l'objet à envoyer backend Stripe
-    async function checkout() {
-      if (Object.keys(cart).length === 0) {
-        showMessage('Votre panier est vide !');
-        return;
-      }
-
-      // Construire lignes d’items Stripe
-      const line_items = Object.values(cart).map(item => ({
-        price_data: {
-          currency: 'eur',
-          product_data: {
-            name: item.product.name,
-            description: item.product.desc,
-          },
-          unit_amount: item.product.price_cents,
-        },
-        quantity: item.quantity,
-      }));
-
-      try {
-        const response = await fetch(BACKEND_URL + '/api/create-checkout-session', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ line_items }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Erreur serveur');
-        }
-
-        const data = await response.json();
-        if(data.url) {
-          window.location.href = data.url;
-        } else {
-          showMessage('Erreur lors de la création du paiement. Veuillez réessayer.');
-        }
-      } catch (error) {
-        showMessage('Erreur lors de la création du paiement. Veuillez réessayer.');
-        console.error(error);
-      }
-    }
-
-    // Ajoute un bouton d’achat flottant (au bas à droite)
-    function addCheckoutButton() {
-      const btn = document.createElement('button');
-      btn.textContent = 'Passer à la caisse';
-      btn.style.position = 'fixed';
-      btn.style.bottom = '20px';
-      btn.style.right = '20px';
-      btn.style.background = '#bb8cff';
-      btn.style.color = '#2e1a47';
-      btn.style.padding = '1rem 1.5rem';
-      btn.style.border = 'none';
-      btn.style.borderRadius = '12px';
-      btn.style.fontWeight = '700';
-      btn.style.fontSize = '1.1rem';
-      btn.style.cursor = 'pointer';
-      btn.style.boxShadow = '0 4px 12px rgba(187,140,255,0.7)';
-      btn.style.zIndex = '1500';
-
-      btn.addEventListener('click', checkout);
-
-      document.body.appendChild(btn);
-    }
-
-    // Initialisation
-    displayProducts();
-    updateCartCount();
-    addCheckoutButton();
-    // Gérer l’ouverture/fermeture du menu
+  // DOM Elements
+  const productsGrid = document.getElementById('productsGrid');
+  const cartCount = document.getElementById('cartCount');
+  const cartModal = document.getElementById('cartModal');
+  const cartItemsContainer = document.getElementById('cartItems');
+  const closeCartBtn = document.getElementById('closeCartBtn');
   const menuBtn = document.getElementById('menuBtn');
   const menuList = document.getElementById('menuList');
-  let menuOpen = false;
+  const categoryButtons = document.querySelectorAll('.category-btn');
 
+  // Panier = { productId: qty }
+  let cart = {};
+
+  // Créer une carte produit
+  function createProductCard(product) {
+    const card = document.createElement('article');
+    card.className = 'product-card';
+    card.setAttribute('tabindex', '0');
+
+    card.innerHTML = `
+      <div class="product-name">${product.name}</div>
+      <div class="product-description">${product.description}</div>
+      <div class="product-description"><em>Parfum:</em> ${product.perfume}</div>
+      <div class="product-price">${product.price} €</div>
+      <div class="quantity-wrapper">
+        <label for="qty-${product.id}">Quantité:</label>
+        <input type="number" min="1" value="1" id="qty-${product.id}" aria-label="Quantité de ${product.name}" />
+      </div>
+      <button class="add-to-cart-btn" aria-label="Ajouter ${product.name} au panier">Ajouter au panier</button>
+    `;
+
+    // Bouton ajout panier
+    const btn = card.querySelector('.add-to-cart-btn');
+    btn.addEventListener('click', () => {
+      const qtyInput = card.querySelector(`#qty-${product.id}`);
+      const qty = parseInt(qtyInput.value);
+      if (qty > 0) {
+        addToCart(product.id, qty);
+      }
+    });
+
+    return card;
+  }
+
+  // Afficher les produits (filtrés)
+  function filterProducts(category) {
+    productsGrid.innerHTML = '';
+
+    let filteredProducts;
+    if(category === 'all') {
+      filteredProducts = products;
+    } else if(category === 'lueur') {
+      filteredProducts = products.filter(p => p.id.startsWith('lueur'));
+    } else {
+      filteredProducts = [];
+    }
+
+    filteredProducts.forEach(p => {
+      productsGrid.appendChild(createProductCard(p));
+    });
+  }
+
+  // Ajouter un produit au panier
+  function addToCart(productId, quantity) {
+    if (cart[productId]) {
+      cart[productId] += quantity;
+    } else {
+      cart[productId] = quantity;
+    }
+    updateCartCount();
+    showCart();
+  }
+
+  // Mettre à jour le compteur panier
+  function updateCartCount() {
+    const totalQty = Object.values(cart).reduce((acc, qty) => acc + qty, 0);
+    cartCount.setAttribute('data-count', totalQty);
+  }
+
+  // Afficher le panier
+  function showCart() {
+    cartItemsContainer.innerHTML = '';
+    if(Object.keys(cart).length === 0) {
+      cartItemsContainer.innerHTML = '<p>Votre panier est vide.</p>';
+    } else {
+      Object.entries(cart).forEach(([id, qty]) => {
+        const product = products.find(p => p.id === id);
+        if(product) {
+          const div = document.createElement('div');
+          div.className = 'cart-item';
+          div.innerHTML = `
+            <span class="cart-item-name">${product.name}</span>
+            <span class="cart-item-qty">x${qty}</span>
+          `;
+          cartItemsContainer.appendChild(div);
+        }
+      });
+    }
+    cartModal.classList.add('active');
+    cartModal.focus();
+  }
+
+  // Fermer le panier
+  closeCartBtn.addEventListener('click', () => {
+    cartModal.classList.remove('active');
+  });
+
+  // Fermer le panier au clic en dehors du contenu
+  cartModal.addEventListener('click', (e) => {
+    if(e.target === cartModal) {
+      cartModal.classList.remove('active');
+    }
+  });
+
+  // Menu déroulant toggle
+  let menuOpen = false;
   menuBtn.addEventListener('click', () => {
     menuOpen = !menuOpen;
     menuList.hidden = !menuOpen;
@@ -369,45 +519,27 @@
     }
   });
 
-  // Filtrer les produits selon catégorie
-  const categoryButtons = document.querySelectorAll('.category-btn');
-
+  // Filtrer produits au clic catégorie
   categoryButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       categoryButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      const cat = btn.dataset.category;
-      filterProducts(cat);
+      filterProducts(btn.dataset.category);
 
-      // Fermer menu après choix
+      // fermer menu
       menuOpen = false;
       menuList.hidden = true;
       menuBtn.setAttribute('aria-expanded', false);
     });
   });
 
-  // Modifie la fonction displayProducts pour filtre par catégorie
-  function filterProducts(category) {
-    productsGrid.innerHTML = '';
+  // Ouvrir panier au clic icône
+  document.querySelector('.icon.cart').addEventListener('click', showCart);
 
-    let filteredProducts;
-    if(category === 'all') {
-      filteredProducts = products;
-    } else {
-      // Ici on filtre par catégorie, pour l’instant on a qu’une catégorie 'lueur'
-      // Tu peux ajouter une propriété category dans tes produits pour gérer ça proprement
-      filteredProducts = products.filter(p => p.id.startsWith(category));
-    }
-
-    filteredProducts.forEach(p => {
-      productsGrid.appendChild(createProductCard(p));
-    });
-  }
-
-  // Initialisation (après que la fonction filterProducts soit déclarée)
+  // Initialisation page
   filterProducts('all');
   updateCartCount();
-  </script>
+</script>
 </body>
 </html>
