@@ -3,746 +3,645 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lueurs d'Âmes - Bougies à Messages Prédictifs</title>
+  <title>Lueurs d'Âmes - Boutique</title>
   <style>
-    /* RESET & BASE */
+    /* --- RESET SIMPLE --- */
     * {
       box-sizing: border-box;
+      margin: 0; padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     }
     body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: #f9f7fd;
-      color: #3c2870;
+      background: #faf8f5;
+      color: #333;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
     }
 
-    /* HEADER */
+    /* --- HEADER --- */
     header {
-      width: 100%;
-      max-width: 1200px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #3c2870;
       padding: 1rem 2rem;
+      background: #fff;
+      box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
       position: sticky;
       top: 0;
-      z-index: 1000;
-      color: #f2e9f7;
+      z-index: 100;
     }
-    .menu-wrapper {
-      position: relative;
-    }
-    #menuBtn {
-      background: #5a4099;
-      border: none;
-      color: #f2e9f7;
-      padding: 0.4rem 1rem;
-      font-size: 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      user-select: none;
-      transition: background-color 0.3s;
-    }
-    #menuBtn:hover {
-      background: #7a56d1;
-    }
-    .menu-list {
-      position: absolute;
-      top: 110%;
-      left: 0;
-      background: #462f85;
-      border-radius: 0 0 10px 10px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.5);
-      min-width: 180px;
-      padding: 0.5rem 0;
-      z-index: 1500;
-    }
-    .menu-list ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    .menu-list li {
-      margin: 0;
-    }
-    .menu-list button.category-btn {
-      width: 100%;
-      background: transparent;
-      border: none;
-      color: #d6b8ff;
-      padding: 0.6rem 1.2rem;
-      text-align: left;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .menu-list button.category-btn:hover,
-    .menu-list button.category-btn.active {
-      background: #7a56d1;
-      color: white;
-    }
-    .brand-name {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: #bb8cff;
-      user-select: none;
-      text-shadow: 0 0 6px #d0a9ff88;
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #6b4226;
+      cursor: default;
       flex: 1;
       text-align: center;
+    }
+    nav {
+      display: flex;
+      gap: 1.5rem;
+      flex: 3;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    nav button {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.5rem 0.8rem;
+      color: #6b4226;
+      font-weight: 600;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+    nav button:hover, nav button.active {
+      border-bottom: 2px solid #c68c53;
     }
     .header-icons {
       display: flex;
+      align-items: center;
       gap: 1rem;
-      align-items: center;
-      font-size: 1.4rem;
+      flex: 1;
+      justify-content: flex-end;
+    }
+    .icon-button {
+      background: none;
+      border: none;
       cursor: pointer;
+      font-size: 1.4rem;
+      color: #6b4226;
       position: relative;
     }
-    .header-icons .icon {
-      color: #d6b8ff;
-      position: relative;
-      user-select: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.7rem;
-      background: transparent;
-      border-radius: 6px;
-      padding: 0.15rem 0.3rem;
-      transition: background-color 0.25s;
-    }
-    .header-icons .icon:hover {
-      background: #7a56d1;
-    }
-    .header-icons .icon.cart::after {
-      content: attr(data-count);
+    .icon-button .badge {
       position: absolute;
       top: -6px;
       right: -8px;
-      background: #ff4081;
+      background: #c68c53;
       color: white;
       font-size: 0.7rem;
-      padding: 2px 6px;
+      font-weight: bold;
       border-radius: 50%;
-      display: none;
+      padding: 2px 6px;
+    }
+
+    /* --- SEARCH --- */
+    #search-container {
+      position: relative;
+      width: 200px;
+      transition: width 0.3s ease;
+      overflow: hidden;
+    }
+    #search-container.collapsed {
+      width: 32px;
+    }
+    #search-input {
+      width: 100%;
+      padding: 0.4rem 0.6rem;
+      font-size: 1rem;
+      border: 1px solid #c68c53;
+      border-radius: 4px;
+      outline: none;
+      transition: opacity 0.3s ease;
+    }
+    #search-container.collapsed #search-input {
+      opacity: 0;
       pointer-events: none;
     }
-    .header-icons .icon.cart[data-count]:not([data-count="0"])::after {
-      display: block;
-    }
 
-    /* SEARCH */
-    .search-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-    #searchIcon {
-      cursor: pointer;
-      font-size: 1.4rem;
-      color: #d6b8ff;
-      padding: 0.2rem 0.4rem;
-      border-radius: 6px;
-      transition: background-color 0.3s;
-      user-select: none;
-    }
-    #searchIcon:hover {
-      background: #7a56d1;
-    }
-    #searchInput {
-      position: absolute;
-      right: 100%;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 0;
-      opacity: 0;
-      padding: 0.3rem 0.6rem;
-      border-radius: 6px;
-      border: 1px solid #7a56d1;
-      font-size: 1rem;
-      background: white;
-      color: #3c2870;
-      transition: width 0.3s ease, opacity 0.3s ease;
-      outline-offset: 2px;
-    }
-    #searchInput.visible {
-      width: 180px;
-      opacity: 1;
-      right: 100%;
-    }
-
-    /* PRODUITS */
+    /* --- MAIN PRODUITS --- */
     main {
-      width: 100%;
-      max-width: 1200px;
-      padding: 2rem 1rem;
       flex: 1;
-    }
-    #productsGrid {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
       display: grid;
-      grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
-      gap: 1.8rem;
+      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+      gap: 2rem;
     }
     .product-card {
       background: white;
-      border-radius: 12px;
+      border-radius: 10px;
+      box-shadow: 0 3px 7px rgb(0 0 0 / 0.1);
       padding: 1rem;
-      box-shadow: 0 2px 8px rgba(60,40,112,0.1);
       display: flex;
       flex-direction: column;
-      transition: transform 0.3s ease;
+      justify-content: space-between;
+      transition: transform 0.2s ease;
     }
     .product-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 6px 15px rgba(60,40,112,0.2);
+      box-shadow: 0 7px 15px rgb(0 0 0 / 0.15);
     }
     .product-name {
       font-weight: 700;
-      font-size: 1.1rem;
-      margin-bottom: 0.3rem;
-      color: #4b3285;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #6b4226;
     }
-    .product-description {
+    .product-desc {
       font-size: 0.9rem;
-      color: #6e5a9a;
-      margin-bottom: 0.8rem;
+      color: #666;
       flex-grow: 1;
+      margin-bottom: 0.8rem;
     }
     .product-price {
-      font-weight: 700;
+      font-weight: 600;
+      color: #c68c53;
+      margin-bottom: 0.5rem;
       font-size: 1.1rem;
-      color: #7a56d1;
-      margin-bottom: 1rem;
     }
-    .quantity-wrapper {
+    .quantity-controls {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
       margin-bottom: 1rem;
     }
-    .quantity-wrapper label {
-      font-weight: 600;
-      color: #3c2870;
-    }
-    .quantity-wrapper input[type="number"] {
-      width: 60px;
-      padding: 0.3rem 0.5rem;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      text-align: center;
-    }
-    .add-to-cart-btn {
-      background: #7a56d1;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 0.6rem;
-      font-weight: 700;
+    .quantity-controls button {
+      padding: 0.2rem 0.7rem;
+      font-size: 1.1rem;
       cursor: pointer;
-      transition: background-color 0.3s;
+      border: 1px solid #c68c53;
+      background: none;
+      border-radius: 5px;
+      color: #6b4226;
+      user-select: none;
+      transition: background-color 0.2s ease;
     }
-    .add-to-cart-btn:hover {
-      background: #5a4099;
+    .quantity-controls button:hover {
+      background-color: #c68c53;
+      color: white;
+    }
+    .quantity-controls span {
+      min-width: 20px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .add-to-cart {
+      background-color: #c68c53;
+      border: none;
+      color: white;
+      padding: 0.7rem 1rem;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .add-to-cart:hover {
+      background-color: #a5632a;
     }
 
-    /* PANIER MODAL */
-    #cartModal {
+    /* --- PANIER --- */
+    #cart-sidebar {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.3);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      padding: 1rem;
-    }
-    #cartModal.active {
-      display: flex;
-    }
-    #cartContent {
+      top: 0; right: 0;
+      width: 350px;
+      max-width: 100vw;
+      height: 100vh;
       background: white;
-      border-radius: 12px;
-      max-width: 500px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 1.5rem 2rem;
-      box-shadow: 0 0 20px rgba(60,40,112,0.3);
+      box-shadow: -3px 0 10px rgb(0 0 0 / 0.15);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
       display: flex;
       flex-direction: column;
+      z-index: 110;
+      padding: 1rem;
     }
-    #cartContent h2 {
-      margin-top: 0;
-      color: #3c2870;
-      font-weight: 800;
+    #cart-sidebar.open {
+      transform: translateX(0);
+    }
+    #cart-sidebar h2 {
       margin-bottom: 1rem;
-      text-align: center;
+      font-weight: 700;
+      color: #6b4226;
+      border-bottom: 2px solid #c68c53;
+      padding-bottom: 0.5rem;
+    }
+    #cart-items {
+      flex-grow: 1;
+      overflow-y: auto;
     }
     .cart-item {
-      border-bottom: 1px solid #ddd;
-      padding: 0.8rem 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 0.8rem;
+      border-bottom: 1px solid #eee;
+      padding: 0.5rem 0;
+      font-size: 0.9rem;
     }
-    .cart-item:last-child {
-      border-bottom: none;
+    .cart-item .info {
+      flex: 1;
     }
-    .cart-item-name {
+    .cart-item .name {
       font-weight: 600;
-      color: #4b3285;
-      flex: 2;
-      min-width: 100px;
+      color: #6b4226;
     }
-    .cart-item-qty input[type="number"] {
-      width: 50px;
-      padding: 0.2rem 0.3rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-weight: 700;
-      color: #7a56d1;
-      text-align: center;
+    .cart-item .quantity {
+      margin: 0 0.5rem;
+      font-weight: 600;
     }
-    .cart-item-qty {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
+    .cart-item .price {
       font-weight: 700;
-      color: #7a56d1;
-    }
-    .cart-item-price {
-      flex: 1;
-      text-align: right;
-      font-weight: 700;
-      color: #7a56d1;
-    }    /* suite CSS du panier & footer */
-    #cartTotal {
-      font-weight: 900;
-      font-size: 1.3rem;
-      color: #3c2870;
-      margin-top: 1rem;
+      color: #c68c53;
+      min-width: 60px;
       text-align: right;
     }
-    #cartActions {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 1.5rem;
-    }
-    #cartActions button {
-      padding: 0.6rem 1.2rem;
-      font-weight: 700;
+    .cart-item button.remove-item {
+      background: none;
       border: none;
+      color: #a5632a;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    #cart-total {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #6b4226;
+      text-align: right;
+      margin: 1rem 0;
+    }
+    #checkout-btn {
+      background-color: #c68c53;
+      border: none;
+      color: white;
+      padding: 0.9rem;
+      font-weight: 700;
+      font-size: 1.1rem;
       border-radius: 8px;
       cursor: pointer;
-      transition: background-color 0.3s;
-      font-size: 1rem;
-      color: white;
+      transition: background-color 0.3s ease;
+      width: 100%;
     }
-    #btnCheckout {
-      background-color: #7a56d1;
-    }
-    #btnCheckout:hover {
-      background-color: #5a4099;
-    }
-    #btnCloseCart {
-      background-color: #ccc;
-      color: #333;
-    }
-    #btnCloseCart:hover {
-      background-color: #aaa;
-      color: #111;
+    #checkout-btn:hover {
+      background-color: #a5632a;
     }
 
+    /* --- FOOTER --- */
     footer {
       text-align: center;
       padding: 1rem 0;
       font-size: 0.9rem;
-      color: #7a56d1;
+      color: #999;
+      background: #fff;
+      margin-top: auto;
     }
 
+    /* Responsive */
+    @media(max-width: 768px) {
+      main {
+        grid-template-columns: 1fr 1fr;
+      }
+      #cart-sidebar {
+        width: 100vw;
+      }
+    }
+    @media(max-width: 480px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        flex-wrap: wrap;
+      }
+    }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
 <body>
 
 <header>
-  <div class="menu-wrapper">
-    <button id="menuBtn" aria-haspopup="true" aria-expanded="false">Menu</button>
-    <nav class="menu-list" id="menuList" aria-label="Catégories" hidden>
-      <ul>
-        <li><button class="category-btn active" data-category="all">Toutes</button></li>
-        <li><button class="category-btn" data-category="espoir">Lueur d’Espoir</button></li>
-        <li><button class="category-btn" data-category="amour">Lueur d’Amour</button></li>
-        <li><button class="category-btn" data-category="serenite">Lueur de Sérénité</button></li>
-        <li><button class="category-btn" data-category="confiance">Lueur de Confiance</button></li>
-        <li><button class="category-btn" data-category="guerison">Lueur de Guérison</button></li>
-        <li><button class="category-btn" data-category="intuition">Lueur d’Intuition</button></li>
-        <li><button class="category-btn" data-category="inspiration">Lueur d’Inspiration</button></li>
-        <li><button class="category-btn" data-category="ame">Lueur d’Âme</button></li>
-      </ul>
-    </nav>
-  </div>
-
-  <div class="brand-name">Lueurs d'Âmes</div>
-
+  <nav aria-label="Menu principal">
+    <button class="menu-btn active" data-category="all">Toutes</button>
+    <button class="menu-btn" data-category="espoir">Lueur d’Espoir</button>
+    <button class="menu-btn" data-category="amour">Lueur d’Amour</button>
+    <button class="menu-btn" data-category="serenite">Lueur de Sérénité</button>
+    <button class="menu-btn" data-category="confiance">Lueur de Confiance</button>
+    <button class="menu-btn" data-category="guerison">Lueur de Guérison</button>
+    <button class="menu-btn" data-category="intuition">Lueur d’Intuition</button>
+    <button class="menu-btn" data-category="inspiration">Lueur d’Inspiration</button>
+    <button class="menu-btn" data-category="ame">Lueur d’Âme</button>
+  </nav>
+  <div class="logo" aria-label="Logo Lueurs d'Âmes">Lueurs d'Âmes</div>
   <div class="header-icons">
-    <div class="search-wrapper">
-      <span id="searchIcon" title="Recherche 🔍">🔍</span>
-      <input type="search" id="searchInput" placeholder="Rechercher une bougie..." aria-label="Recherche" />
+    <button id="search-toggle" class="icon-button" aria-label="Recherche">
+      🔍
+    </button>
+    <div id="search-container" class="collapsed">
+      <input type="search" id="search-input" placeholder="Recherche..." aria-label="Recherche des produits" />
     </div>
-    <a href="compte.html" title="Mon Compte" class="icon user" aria-label="Compte utilisateur">👤</a>
-    <button class="icon cart" id="cartBtn" aria-label="Voir le panier" data-count="0">🛒</button>
+    <button id="user-btn" class="icon-button" aria-label="Compte utilisateur" title="Compte utilisateur">👤</button>
+    <button id="cart-btn" class="icon-button" aria-label="Voir le panier" title="Voir le panier">
+      🛒 <span id="cart-count" class="badge" style="display:none;">0</span>
+    </button>
   </div>
 </header>
 
-<main>
-  <div id="productsGrid" aria-live="polite"></div>
+<main id="products-container" aria-live="polite" aria-label="Liste des bougies à messages">
+  <!-- Produits injectés ici -->
 </main>
 
-<!-- MODAL PANIER -->
-<div id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle" tabindex="-1">
-  <div id="cartContent">
-    <h2 id="cartTitle">Votre Panier</h2>
-    <div id="cartItems"></div>
-    <div id="cartTotal">Total: 0 €</div>
-    <div id="cartActions">
-      <button id="btnCheckout">Payer</button>
-      <button id="btnCloseCart">Fermer</button>
-    </div>
-  </div>
-</div>
+<!-- Sidebar Panier -->
+<aside id="cart-sidebar" aria-label="Panier d'achat" role="region" aria-hidden="true">
+  <h2>Votre panier</h2>
+  <div id="cart-items"></div>
+  <div id="cart-total">Total : 0 €</div>
+  <button id="checkout-btn" disabled>Payer</button>
+</aside>
+
+<footer>
+  © 2025 Lueurs d'Âmes — Tous droits réservés
+</footer>
 
 <script>
-  // DATA PRODUITS
+  // Données produits
   const products = [
     {
       id: "espoir",
       name: "Lueur d’Espoir",
-      description: "Une bougie pour les moments de doute, offrant une lumière intérieure et un message d'encouragement.",
-      price: 20,
+      desc: "Une bougie pour les moments de doute, offrant une lumière intérieure et un message d'encouragement.",
+      price: 15,
       category: "espoir",
-      parfum: "Notes d'agrumes et de menthe poivrée",
     },
     {
       id: "amour",
       name: "Lueur d’Amour",
-      description: "Destinée à raviver les relations, cette bougie diffuse une énergie chaleureuse et un message d'affection.",
-      price: 22,
+      desc: "Destinée à raviver les relations, cette bougie diffuse une énergie chaleureuse et un message d'affection.",
+      price: 18,
       category: "amour",
-      parfum: "Rose et vanille",
     },
     {
       id: "serenite",
       name: "Lueur de Sérénité",
-      description: "Parfaite pour les instants de méditation, elle apporte calme et équilibre, accompagnée d'un message apaisant.",
-      price: 21,
+      desc: "Parfaite pour les instants de méditation, elle apporte calme et équilibre, accompagnée d'un message apaisant.",
+      price: 17,
       category: "serenite",
-      parfum: "Lavande et bois de santal",
     },
     {
       id: "confiance",
       name: "Lueur de Confiance",
-      description: "Pour renforcer la confiance en soi, cette bougie inspire courage et détermination, avec un message motivant.",
-      price: 23,
+      desc: "Pour renforcer la confiance en soi, cette bougie inspire courage et détermination, avec un message motivant.",
+      price: 20,
       category: "confiance",
-      parfum: "Bois de cèdre et musc",
     },
     {
       id: "guerison",
       name: "Lueur de Guérison",
-      description: "Idéale pour les périodes de transition, elle offre un message de guérison et de renouveau.",
-      price: 20,
+      desc: "Idéale pour les périodes de transition, elle offre un message de guérison et de renouveau.",
+      price: 19,
       category: "guerison",
-      parfum: "Camomille et eucalyptus",
     },
     {
       id: "intuition",
       name: "Lueur d’Intuition",
-      description: "Encourage l'écoute de son intuition, avec un message guidant vers la sagesse intérieure.",
-      price: 24,
+      desc: "Encourage l'écoute de son intuition, avec un message guidant vers la sagesse intérieure.",
+      price: 18,
       category: "intuition",
-      parfum: "Patchouli et jasmin",
     },
     {
       id: "inspiration",
       name: "Lueur d’Inspiration",
-      description: "Pour stimuler la créativité, cette bougie diffuse une énergie inspirante et un message de découverte.",
-      price: 22,
+      desc: "Pour stimuler la créativité, cette bougie diffuse une énergie inspirante et un message de découverte.",
+      price: 21,
       category: "inspiration",
-      parfum: "Fleur d'oranger et ylang-ylang",
     },
     {
       id: "ame",
       name: "Lueur d’Âme",
-      description: "La bougie phare, offrant un message profond et spirituel, invitant à la réflexion personnelle.",
+      desc: "La bougie phare, offrant un message profond et spirituel, invitant à la réflexion personnelle.",
       price: 25,
       category: "ame",
-      parfum: "Encens et myrrhe",
     },
   ];
 
-  // Variables état
-  let filteredCategory = "all";
-  let cart = {}; // id -> quantity
-  let searchTerm = "";
+  let cart = {};
 
-  // ELEMENTS
-  const menuBtn = document.getElementById("menuBtn");
-  const menuList = document.getElementById("menuList");
-  const productsGrid = document.getElementById("productsGrid");
-  const cartBtn = document.getElementById("cartBtn");
-  const cartModal = document.getElementById("cartModal");
-  const cartItems = document.getElementById("cartItems");
-  const cartTotal = document.getElementById("cartTotal");
-  const btnCloseCart = document.getElementById("btnCloseCart");
-  const btnCheckout = document.getElementById("btnCheckout");
-  const searchIcon = document.getElementById("searchIcon");
-  const searchInput = document.getElementById("searchInput");
+  // Affichage des produits filtrés par catégorie
+  const productsContainer = document.getElementById("products-container");
+  const menuButtons = document.querySelectorAll("nav button.menu-btn");
 
-  // Affiche ou cache le menu des catégories
-  menuBtn.addEventListener("click", () => {
-    const expanded = menuBtn.getAttribute("aria-expanded") === "true";
-    menuBtn.setAttribute("aria-expanded", !expanded);
-    if (menuList.hasAttribute("hidden")) {
-      menuList.removeAttribute("hidden");
-    } else {
-      menuList.setAttribute("hidden", "");
-    }
-  });
-
-  // Sélection catégorie
-  menuList.querySelectorAll(".category-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      filteredCategory = btn.dataset.category;
-      // Activer le bouton sélectionné
-      menuList.querySelectorAll(".category-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      renderProducts();
-      menuList.setAttribute("hidden", "");
-      menuBtn.setAttribute("aria-expanded", false);
-    });
-  });
-
-  // Affichage des produits filtrés
-  function renderProducts() {
-    // Filtre par catégorie et recherche
-    let filtered = products.filter(p => 
-      (filteredCategory === "all" || p.category === filteredCategory) &&
-      (p.name.toLowerCase().includes(searchTerm) || p.description.toLowerCase().includes(searchTerm))
-    );
-
+  function renderProducts(filter = "all") {
+    productsContainer.innerHTML = "";
+    const filtered = filter === "all" ? products : products.filter(p => p.category === filter);
     if(filtered.length === 0) {
-      productsGrid.innerHTML = "<p>Aucun produit trouvé.</p>";
+      productsContainer.innerHTML = "<p>Aucun produit trouvé.</p>";
       return;
     }
-
-    productsGrid.innerHTML = filtered.map(p => `
-      <article class="product-card" aria-label="${p.name}">
-        <h3 class="product-name">${p.name}</h3>
-        <p class="product-description">${p.description}<br><small><em>Parfum : ${p.parfum}</em></small></p>
+    filtered.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.innerHTML = `
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
         <div class="product-price">${p.price.toFixed(2)} €</div>
-        <div class="quantity-wrapper">
-          <label for="qty-${p.id}">Quantité:</label>
-          <input type="number" id="qty-${p.id}" min="1" max="10" value="1" aria-label="Quantité pour ${p.name}" />
+        <div class="quantity-controls">
+          <button class="qty-decrease" aria-label="Réduire quantité">−</button>
+          <span class="qty-value" aria-live="polite" aria-atomic="true">1</span>
+          <button class="qty-increase" aria-label="Augmenter quantité">+</button>
         </div>
-        <button class="add-to-cart-btn" data-id="${p.id}">Ajouter au panier</button>
-      </article>
-    `).join("");
+        <button class="add-to-cart">Ajouter au panier</button>
+      `;
+      productsContainer.appendChild(card);
 
-    // Ajout écouteur boutons panier
-    productsGrid.querySelectorAll(".add-to-cart-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const id = btn.dataset.id;
-        const qtyInput = document.getElementById("qty-" + id);
-        let qty = parseInt(qtyInput.value);
-        if (isNaN(qty) || qty < 1) qty = 1;
-        addToCart(id, qty);
+      const qtyDecreaseBtn = card.querySelector(".qty-decrease");
+      const qtyIncreaseBtn = card.querySelector(".qty-increase");
+      const qtyValue = card.querySelector(".qty-value");
+      const addToCartBtn = card.querySelector(".add-to-cart");
+
+      let quantity = 1;
+      qtyDecreaseBtn.addEventListener("click", () => {
+        if(quantity > 1) {
+          quantity--;
+          qtyValue.textContent = quantity;
+        }
+      });
+      qtyIncreaseBtn.addEventListener("click", () => {
+        quantity++;
+        qtyValue.textContent = quantity;
+      });
+
+      addToCartBtn.addEventListener("click", () => {
+        addToCart(p.id, quantity);
       });
     });
   }
 
-  // Ajouter au panier
-  function addToCart(id, qty) {
-    if (cart[id]) {
-      cart[id] += qty;
-    } else {
-      cart[id] = qty;
-    }
-    updateCartCount();
-    alert("Ajouté au panier !");
-  }
+  // Filtrage menu
+  menuButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      menuButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderProducts(btn.dataset.category);
+    });
+  });
 
-  // Mise à jour affichage nombre articles panier
-  function updateCartCount() {
-    const totalCount = Object.values(cart).reduce((a,b) => a + b, 0);
-    cartBtn.setAttribute("data-count", totalCount);
-  }
+  renderProducts();
 
-  // Afficher panier modal
+  // Gestion panier
+  const cartBtn = document.getElementById("cart-btn");
+  const cartSidebar = document.getElementById("cart-sidebar");
+  const cartItemsContainer = document.getElementById("cart-items");
+  const cartCountBadge = document.getElementById("cart-count");
+  const cartTotalEl = document.getElementById("cart-total");
+  const checkoutBtn = document.getElementById("checkout-btn");
+
   cartBtn.addEventListener("click", () => {
-    renderCart();
-    cartModal.classList.add("active");
-    cartModal.focus();
+    cartSidebar.classList.toggle("open");
+    cartSidebar.setAttribute("aria-hidden", !cartSidebar.classList.contains("open"));
   });
 
-  btnCloseCart.addEventListener("click", () => {
-    cartModal.classList.remove("active");
-  });
-
-  // Fermer modal avec Esc
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && cartModal.classList.contains("active")) {
-      cartModal.classList.remove("active");
-    }
-  });
-
-  // Rendu contenu panier
-  function renderCart() {
-    if (Object.keys(cart).length === 0) {
-      cartItems.innerHTML = "<p>Votre panier est vide.</p>";
-      cartTotal.textContent = "Total: 0 €";
-      btnCheckout.disabled = true;
+  function updateCartUI() {
+    const items = Object.entries(cart);
+    cartItemsContainer.innerHTML = "";
+    if(items.length === 0) {
+      cartItemsContainer.innerHTML = "<p>Votre panier est vide.</p>";
+      cartCountBadge.style.display = "none";
+      checkoutBtn.disabled = true;
+      cartTotalEl.textContent = "Total : 0 €";
       return;
     }
-    btnCheckout.disabled = false;
-    cartItems.innerHTML = "";
     let total = 0;
+    let totalQty = 0;
 
-    for (const id in cart) {
-      const product = products.find(p => p.id === id);
-      const quantity = cart[id];
-      const linePrice = product.price * quantity;
-      total += linePrice;
+    items.forEach(([productId, quantity]) => {
+      const product = products.find(p => p.id === productId);
+      const lineTotal = product.price * quantity;
+      total += lineTotal;
+      totalQty += quantity;
 
       const itemDiv = document.createElement("div");
       itemDiv.className = "cart-item";
-
       itemDiv.innerHTML = `
-        <div class="cart-item-name">${product.name}</div>
-        <div class="cart-item-qty">
-          <label for="cartQty-${id}" class="sr-only">Quantité</label>
-          <input type="number" id="cartQty-${id}" min="1" max="10" value="${quantity}" aria-label="Quantité pour ${product.name}" />
-          <button aria-label="Supprimer ${product.name}" class="remove-item-btn" title="Supprimer cet article">✖</button>
+        <div class="info">
+          <div class="name">${product.name}</div>
+          <div>Quantité: <strong>${quantity}</strong></div>
         </div>
-        <div class="cart-item-price">${linePrice.toFixed(2)} €</div>
+        <div class="price">${lineTotal.toFixed(2)} €</div>
+        <button aria-label="Supprimer ${product.name}" class="remove-item">×</button>
       `;
-      cartItems.appendChild(itemDiv);
+      cartItemsContainer.appendChild(itemDiv);
 
-      // Ecouteur changement quantité
-      const qtyInput = itemDiv.querySelector("input[type='number']");
-      qtyInput.addEventListener("change", () => {
-        let val = parseInt(qtyInput.value);
-        if (isNaN(val) || val < 1) val = 1;
-        if (val > 10) val = 10;
-        qtyInput.value = val;
-        cart[id] = val;
-        renderCart();
-        updateCartCount();
+      itemDiv.querySelector(".remove-item").addEventListener("click", () => {
+        delete cart[productId];
+        updateCartUI();
       });
-
-      // Ecouteur suppression article
-      const removeBtn = itemDiv.querySelector(".remove-item-btn");
-      removeBtn.addEventListener("click", () => {
-        delete cart[id];
-        renderCart();
-        updateCartCount();
-      });
-    }
-
-    cartTotal.textContent = `Total: ${total.toFixed(2)} €`;
+    });
+    cartCountBadge.textContent = totalQty;
+    cartCountBadge.style.display = totalQty > 0 ? "inline-block" : "none";
+    cartTotalEl.textContent = `Total : ${total.toFixed(2)} €`;
+    checkoutBtn.disabled = false;
   }
 
-  // Checkout simulé
-  btnCheckout.addEventListener("click", () => {
-    if (Object.keys(cart).length === 0) return;
-
-    // Simple formulaire simulé
-    const confirmation = confirm(`Vous allez payer ${cartTotal.textContent.replace("Total: ", "")}. Confirmez-vous ?`);
-    if (confirmation) {
-      alert("Paiement effectué avec succès ! Merci pour votre achat.");
-      cart = {};
-      updateCartCount();
-      cartModal.classList.remove("active");
+  function addToCart(productId, quantity) {
+    if(cart[productId]) {
+      cart[productId] += quantity;
+    } else {
+      cart[productId] = quantity;
     }
+    updateCartUI();
+  }
+
+  updateCartUI();
+
+  // Paiement Stripe
+  checkoutBtn.addEventListener("click", () => {
+    if(Object.keys(cart).length === 0) return alert("Votre panier est vide.");
+    
+    // Préparer les données pour l'API backend
+    const line_items = Object.entries(cart).map(([productId, quantity]) => {
+      const product = products.find(p => p.id === productId);
+      return {
+        price_data: {
+          currency: "eur",
+          product_data: { name: product.name },
+          unit_amount: product.price * 100, // en centimes
+        },
+        quantity,
+      };
+    });
+
+    fetch("/api/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ line_items }),
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data.url) {
+        window.location.href = data.url; // redirection Stripe Checkout
+      } else {
+        alert("Erreur lors du paiement, veuillez réessayer.");
+      }
+    })
+    .catch(() => alert("Erreur réseau, veuillez réessayer."));
   });
 
-  // Recherche togglable
-  searchIcon.addEventListener("click", () => {
-    if (searchInput.classList.contains("visible")) {
-      searchInput.value = "";
-      searchTerm = "";
-      searchInput.classList.remove("visible");
-      renderProducts();
-    } else {
-      searchInput.classList.add("visible");
+  // Recherche déployante
+  const searchToggle = document.getElementById("search-toggle");
+  const searchContainer = document.getElementById("search-container");
+  const searchInput = document.getElementById("search-input");
+
+  searchToggle.addEventListener("click", () => {
+    const collapsed = searchContainer.classList.toggle("collapsed");
+    if(!collapsed) {
       searchInput.focus();
     }
   });
 
-  // Recherche en temps réel
   searchInput.addEventListener("input", () => {
-    searchTerm = searchInput.value.trim().toLowerCase();
-    renderProducts();
-  });
-
-  // Initial render
-  renderProducts();
-  updateCartCount();
-
-  // Close menu if clicked outside
-  document.addEventListener("click", (e) => {
-    if (!menuBtn.contains(e.target) && !menuList.contains(e.target)) {
-      menuList.setAttribute("hidden", "");
-      menuBtn.setAttribute("aria-expanded", false);
+    const query = searchInput.value.toLowerCase();
+    const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query));
+    productsContainer.innerHTML = "";
+    if(filtered.length === 0) {
+      productsContainer.innerHTML = "<p>Aucun produit ne correspond à votre recherche.</p>";
+      return;
     }
-  });
-</script>
+    filtered.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.innerHTML = `
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-price">${p.price.toFixed(2)} €</div>
+        <div class="quantity-controls">
+          <button class="qty-decrease" aria-label="Réduire quantité">−</button>
+          <span class="qty-value" aria-live="polite" aria-atomic="true">1</span>
+          <button class="qty-increase" aria-label="Augmenter quantité">+</button>
+        </div>
+        <button class="add-to-cart">Ajouter au panier</button>
+      `;
+      productsContainer.appendChild(card);
 
-<footer>
-  &copy; 2025 Lueurs d'Âmes. Tous droits réservés.
-</footer>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const checkoutButton = document.getElementById("payer");
+      let quantity = 1;
+      const qtyDecreaseBtn = card.querySelector(".qty-decrease");
+      const qtyIncreaseBtn = card.querySelector(".qty-increase");
+      const qtyValue = card.querySelector(".qty-value");
+      const addToCartBtn = card.querySelector(".add-to-cart");
 
-    if (checkoutButton) {
-      checkoutButton.addEventListener("click", () => {
-        fetch("https://stripe-backend-njvcb6t6q-lueurs-dames-projects.vercel.app/api/create-checkout-session", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            items: [
-              { id: 1, quantity: 1 } // ⚠️ À adapter selon ton panier
-            ]
-          })
-        })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.url) {
-            window.location.href = data.url;
-          } else {
-            alert("Erreur lors de la création du paiement.");
-          }
-        })
-        .catch((error) => {
-          console.error("Erreur :", error);
-          alert("Erreur lors de la création du paiement.");
-        });
+      qtyDecreaseBtn.addEventListener("click", () => {
+        if(quantity > 1) {
+          quantity--;
+          qtyValue.textContent = quantity;
+        }
       });
-    }
+      qtyIncreaseBtn.addEventListener("click", () => {
+        quantity++;
+        qtyValue.textContent = quantity;
+      });
+
+      addToCartBtn.addEventListener("click", () => {
+        addToCart(p.id, quantity);
+      });
+    });
+  });
+
+  // Bouton utilisateur -> page compte
+  document.getElementById("user-btn").addEventListener("click", () => {
+    window.location.href = "compte.html";
   });
 </script>
 
 </body>
 </html>
-
