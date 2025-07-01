@@ -1,55 +1,284 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="description" content="Bougies artisanales naturelles – commandez en ligne !">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lueurs d'Âmes</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lueur d’Âmes - Bougies artisanales mystiques</title>
+  <meta name="description" content="Bougies artisanales naturelles avec messages inspirants cachés. Mystique, réconfort et guidance pour votre rituel personnel." />
   <style>
+    /* ====== POLICES ====== */
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap');
+
+    /* ====== VARIABLES COULEURS ====== */
+    :root {
+      --violet-fonce: #4b2e83;
+      --violet-clair: #8b7cca;
+      --beige-clair: #f3ede7;
+      --marron-doux: #5a4433;
+      --blanc: #fff;
+      --ombre: rgba(0,0,0,0.1);
+    }
+
+    /* ====== RESET ====== */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
     body {
-      font-family: sans-serif;
-      text-align: center;
-      background: #4e0169;
-      color: #333;
-      padding: 2em;
+      font-family: 'Montserrat', sans-serif;
+      background: var(--beige-clair);
+      color: var(--marron-doux);
+      line-height: 1.6;
     }
+
+    a {
+      color: var(--violet-fonce);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover {
+      color: var(--violet-clair);
+    }
+
+    /* ====== CONTENEUR ====== */
     .container {
-      max-width: 600px;
+      width: 90%;
+      max-width: 1100px;
       margin: auto;
+      padding: 1rem 0 3rem;
     }
-    .product {
-      padding: 1em;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      margin: 2em 0;
-      background: white;
+
+    /* ====== HEADER ====== */
+    header {
+      background: var(--violet-fonce);
+      color: var(--blanc);
+      padding: 1rem 0;
+      box-shadow: 0 2px 5px var(--ombre);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    button {
-      background: #e723f6;
-      color: white;
+
+    header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem;
+      letter-spacing: 0.05em;
+      user-select: none;
+    }
+
+    nav a {
+      margin-left: 2rem;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    /* ====== BANNIÈRE PRINCIPALE ====== */
+    .hero {
+      background: linear-gradient(135deg, var(--violet-clair) 0%, var(--violet-fonce) 100%);
+      color: var(--blanc);
+      text-align: center;
+      padding: 4rem 1rem 6rem;
+      font-family: 'Great Vibes', cursive;
+      box-shadow: inset 0 0 150px 50px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 400;
+      line-height: 1.5;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+
+    /* ====== SECTIONS ====== */
+    section {
+      margin-top: 4rem;
+    }
+
+    section h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.5rem;
+      color: var(--violet-fonce);
+      text-align: center;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* À propos */
+    #about p {
+      max-width: 700px;
+      margin: auto;
+      font-size: 1.1rem;
+      font-style: italic;
+      text-align: center;
+      color: var(--marron-doux);
+      line-height: 1.7;
+    }
+
+    /* Nos Bougies */
+    #products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      padding: 0 1rem;
+    }
+
+    .product-card {
+      background: var(--blanc);
+      border-radius: 10px;
+      box-shadow: 0 4px 10px var(--ombre);
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 16px var(--ombre);
+    }
+
+    .product-card img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 3px 7px rgba(0,0,0,0.15);
+    }
+
+    .product-card h3 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--violet-fonce);
+    }
+
+    .product-card p {
+      font-size: 1rem;
+      color: var(--marron-doux);
+      margin-bottom: 1rem;
+    }
+
+    .btn-buy {
+      background: var(--violet-fonce);
+      color: var(--blanc);
+      padding: 0.5rem 1.5rem;
       border: none;
-      padding: 1em 2em;
-      border-radius: 6px;
-      font-size: 1em;
+      border-radius: 30px;
       cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .btn-buy:hover {
+      background: var(--violet-clair);
+    }
+
+    /* Concept */
+    #concept p {
+      max-width: 700px;
+      margin: auto;
+      font-size: 1.1rem;
+      color: var(--marron-doux);
+      text-align: center;
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--violet-fonce);
+      color: var(--blanc);
+      text-align: center;
+      padding: 1.5rem 1rem;
+      margin-top: 4rem;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    footer a {
+      color: var(--beige-clair);
+      margin: 0 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: var(--blanc);
+    }
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 2.4rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      header .container {
+        flex-direction: column;
+      }
+
+      nav a {
+        margin-left: 0;
+        margin-right: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Lueurs d'Âmes</h1>
-    <h1>Bougies Naturelles</h1>
-    <p>Fabriquées à la main, avec amour 💜</p>
-
-    <div class="product">
-      <h2>Bougie Canelle</h2>
-      <p>15,00 €</p>
-
-      <!-- BOUTON PAIEMENT STRIPE -->
-      <form action="https://buy.stripe.com/test_XXXXXXXXXXXXXX" method="GET">
-        <button type="submit">Acheter par carte</button>
-      </form>
+  <header>
+    <div class="container">
+      <div class="logo">Lueur d’Âmes</div>
+      <nav>
+        <a href="#about">À propos</a>
+        <a href="#products">Nos Bougies</a>
+        <a href="#concept">Le concept</a>
+      </nav>
     </div>
-  </div>
-</body>
-</html>
+  </header>
+
+  <section class="hero" aria-label="Bannière principale">
+    <h1>Lueur d’Âmes</h1>
+    <p>Des bougies artisanales uniques, porteurs de messages et de lumière intérieure.</p>
+  </section>
+
+  <section id="about" aria-labelledby="about-title">
+    <h2 id="about-title">À propos</h2>
+    <p>
+      Lueur d’Âmes est une marque de bougies naturelles, faites main, mêlant mystique, réconfort et inspiration. Chaque bougie cache un message ou une prédiction pour accompagner vos instants de méditation et de douceur.
+    </p>
+  </section>
+
+  <section id="products" aria-labelledby="products-title">
+    <h2 id="products-title">Nos Bougies</h2>
+
+    <article class="product-card">
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Bougie Vanille et Lavande" />
+      <h3>Bougie Vanille & Lavande</h3>
+      <p>Un parfum doux et apaisant, pour une ambiance relaxante et mystique.</p>
+      <button class="btn-buy">Acheter</button>
+    </article>
+
+    <article class="product-card">
+      <img src="https://images.unsplash.com/photo-1516594798940-c2c8e4df3d63?auto=format&fit=crop&w=400&q=80" alt="Bougie Cèdre et Santal" />
+      <h3>Bougie Cèdre & Santal</h3>
+      <p>Un parfum boisé et chaleureux, pour vos rituels personnels et moments d’introspection.</p>
+      <button class="btn-buy">Acheter</button>
+   
