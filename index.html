@@ -709,6 +709,39 @@
 <footer>
   &copy; 2025 Lueurs d'Âmes. Tous droits réservés.
 </footer>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const checkoutButton = document.getElementById("payer");
+
+    if (checkoutButton) {
+      checkoutButton.addEventListener("click", () => {
+        fetch("https://stripe-backend-njvcb6t6q-lueurs-dames-projects.vercel.app/api/create-checkout-session", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            items: [
+              { id: 1, quantity: 1 } // ⚠️ À adapter selon ton panier
+            ]
+          })
+        })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.url) {
+            window.location.href = data.url;
+          } else {
+            alert("Erreur lors de la création du paiement.");
+          }
+        })
+        .catch((error) => {
+          console.error("Erreur :", error);
+          alert("Erreur lors de la création du paiement.");
+        });
+      });
+    }
+  });
+</script>
 
 </body>
 </html>
