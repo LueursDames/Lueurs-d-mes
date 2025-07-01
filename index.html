@@ -1,647 +1,673 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lueurs d'Âmes - Boutique</title>
-  <style>
-    /* --- RESET SIMPLE --- */
-    * {
-      box-sizing: border-box;
-      margin: 0; padding: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    }
-    body {
-      background: #faf8f5;
-      color: #333;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lueurs d'Âmes - Bougies Mystiques</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-    /* --- HEADER --- */
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 2rem;
-      background: #fff;
-      box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .logo {
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: #6b4226;
-      cursor: default;
-      flex: 1;
-      text-align: center;
-    }
-    nav {
-      display: flex;
-      gap: 1.5rem;
-      flex: 3;
-      justify-content: flex-start;
-      align-items: center;
-    }
-    nav button {
-      background: none;
-      border: none;
-      font-size: 1rem;
-      cursor: pointer;
-      padding: 0.5rem 0.8rem;
-      color: #6b4226;
-      font-weight: 600;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.3s ease;
-    }
-    nav button:hover, nav button.active {
-      border-bottom: 2px solid #c68c53;
-    }
-    .header-icons {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex: 1;
-      justify-content: flex-end;
-    }
-    .icon-button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 1.4rem;
-      color: #6b4226;
-      position: relative;
-    }
-    .icon-button .badge {
-      position: absolute;
-      top: -6px;
-      right: -8px;
-      background: #c68c53;
-      color: white;
-      font-size: 0.7rem;
-      font-weight: bold;
-      border-radius: 50%;
-      padding: 2px 6px;
-    }
+  body {
+    margin: 0; font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #3e1a53, #7b4b9e);
+    color: #eee;
+    min-height: 100vh;
+    background-image: radial-gradient(#bb9fee 1px, transparent 1px), radial-gradient(#bb9fee 1px, transparent 1px);
+    background-position: 0 0, 25px 25px;
+    background-size: 50px 50px;
+  }
 
-    /* --- SEARCH --- */
-    #search-container {
-      position: relative;
-      width: 200px;
-      transition: width 0.3s ease;
-      overflow: hidden;
-    }
-    #search-container.collapsed {
-      width: 32px;
-    }
-    #search-input {
-      width: 100%;
-      padding: 0.4rem 0.6rem;
-      font-size: 1rem;
-      border: 1px solid #c68c53;
-      border-radius: 4px;
-      outline: none;
-      transition: opacity 0.3s ease;
-    }
-    #search-container.collapsed #search-input {
-      opacity: 0;
-      pointer-events: none;
-    }
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(60, 10, 90, 0.85);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px #a17ffb88;
+    padding: 10px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-    /* --- MAIN PRODUITS --- */
-    main {
-      flex: 1;
-      padding: 2rem;
-      max-width: 1200px;
-      margin: auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
-      gap: 2rem;
-    }
-    .product-card {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 3px 7px rgb(0 0 0 / 0.1);
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.2s ease;
-    }
-    .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 7px 15px rgb(0 0 0 / 0.15);
-    }
-    .product-name {
-      font-weight: 700;
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      color: #6b4226;
-    }
-    .product-desc {
-      font-size: 0.9rem;
-      color: #666;
-      flex-grow: 1;
-      margin-bottom: 0.8rem;
-    }
-    .product-price {
-      font-weight: 600;
-      color: #c68c53;
-      margin-bottom: 0.5rem;
-      font-size: 1.1rem;
-    }
-    .quantity-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    .quantity-controls button {
-      padding: 0.2rem 0.7rem;
-      font-size: 1.1rem;
-      cursor: pointer;
-      border: 1px solid #c68c53;
-      background: none;
-      border-radius: 5px;
-      color: #6b4226;
-      user-select: none;
-      transition: background-color 0.2s ease;
-    }
-    .quantity-controls button:hover {
-      background-color: #c68c53;
-      color: white;
-    }
-    .quantity-controls span {
-      min-width: 20px;
-      text-align: center;
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-    .add-to-cart {
-      background-color: #c68c53;
-      border: none;
-      color: white;
-      padding: 0.7rem 1rem;
-      font-weight: 700;
-      font-size: 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .add-to-cart:hover {
-      background-color: #a5632a;
-    }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 18px;
+    margin: 0; padding: 0;
+  }
 
-    /* --- PANIER --- */
-    #cart-sidebar {
+  nav ul li {
+    cursor: pointer;
+    font-weight: 600;
+    color: #d8b4f7;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  nav ul li:hover,
+  nav ul li.active {
+    background: #a679f7;
+    color: #fff;
+    box-shadow: 0 0 10px #c3a4ff;
+  }
+
+  .logo {
+    font-weight: 900;
+    font-size: 1.9rem;
+    color: #e6c7ff;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px #d2a9ff;
+  }
+
+  .icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .icon-btn {
+    cursor: pointer;
+    font-size: 1.4rem;
+    color: #d8b4f7;
+    background: none;
+    border: none;
+    position: relative;
+    transition: color 0.3s;
+  }
+  .icon-btn:hover {
+    color: #f7c1ff;
+    text-shadow: 0 0 8px #f7c1ff;
+  }
+
+  #cart-count {
+    position: absolute;
+    top: -6px; right: -8px;
+    background: #f9c2ff;
+    color: #4b1168;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    border-radius: 50%;
+    box-shadow: 0 0 4px #d79dff;
+  }
+
+  #search-bar {
+    display: none;
+    position: absolute;
+    top: 48px;
+    right: 0;
+  }
+
+  #search-bar input {
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    width: 220px;
+    background: rgba(255 255 255 / 0.15);
+    color: #eee;
+    box-shadow: 0 0 12px #cfa1ff;
+  }
+  #search-bar input::placeholder {
+    color: #d7b9ffaa;
+  }
+
+  main {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 25px 80px;
+  }
+
+  .products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 28px;
+  }
+
+  .product {
+    background: rgba(115, 41, 142, 0.8);
+    border-radius: 18px;
+    box-shadow: 0 0 15px #b288ffaa;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #f0e6ff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .product:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 25px #d3a7ffcc;
+  }
+
+  .product img {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #bb8fffcc;
+    margin-bottom: 12px;
+    background: radial-gradient(circle, #a07bff, #5b2a8d);
+  }
+
+  .product h3 {
+    margin: 8px 0 6px;
+    font-size: 1.25rem;
+    text-align: center;
+    text-shadow: 0 0 5px #cbb8ffcc;
+  }
+
+  .product p.desc {
+    font-size: 0.9rem;
+    text-align: center;
+    font-style: italic;
+    color: #dabfffcc;
+    min-height: 60px;
+  }
+
+  .product p.parfum {
+    margin-top: 4px;
+    font-size: 0.85rem;
+    color: #d7baffcc;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .product .price {
+    margin: 12px 0 8px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #f0d9ff;
+    text-shadow: 0 0 5px #d8b4f7;
+  }
+
+  .quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .quantity-control label {
+    font-weight: 600;
+    color: #d1b9ff;
+  }
+
+  .quantity-control input {
+    width: 50px;
+    border-radius: 8px;
+    border: none;
+    text-align: center;
+    font-size: 1rem;
+    padding: 6px 8px;
+  }
+
+  button.add-to-cart {
+    margin-top: 14px;
+    background: #b180ff;
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    padding: 9px 15px;
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow: 0 0 12px #b389ff;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+
+  button.add-to-cart:hover {
+    background: #9149ff;
+    box-shadow: 0 0 25px #caaaff;
+  }
+
+  aside#cart {
+    position: fixed;
+    top: 70px;
+    right: 25px;
+    width: 360px;
+    max-height: 80vh;
+    background: rgba(60, 10, 90, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 0 30px #bb99ffdd;
+    padding: 20px;
+    overflow-y: auto;
+    color: #f0e6ff;
+    z-index: 150;
+    display: none;
+  }
+
+  aside#cart h2 {
+    font-weight: 900;
+    margin: 0 0 16px;
+    font-size: 1.6rem;
+    color: #d3afff;
+    text-shadow: 0 0 10px #e7d7ffcc;
+  }
+
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    border-bottom: 1px solid #7b4bb6aa;
+    padding-bottom: 8px;
+  }
+
+  .cart-item-name {
+    flex: 1;
+    font-weight: 600;
+    color: #e3c8ff;
+  }
+
+  .cart-item-qty {
+    width: 40px;
+    margin: 0 8px;
+  }
+  .cart-item-qty input {
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+    text-align: center;
+    font-size: 1rem;
+    padding: 4px;
+  }
+
+  .cart-item-price {
+    font-weight: 700;
+    min-width: 55px;
+    text-align: right;
+    color: #c99fff;
+  }
+
+  .cart-total {
+    font-weight: 900;
+    font-size: 1.4rem;
+    margin-top: 20px;
+    color: #dabfff;
+    text-align: right;
+    text-shadow: 0 0 10px #cdb7ffcc;
+  }
+
+  button#checkout {
+    width: 100%;
+    background: #a270ff;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    font-size: 1.2rem;
+    border-radius: 16px;
+    cursor: pointer;
+    margin-top: 22px;
+    font-weight: 800;
+    box-shadow: 0 0 18px #bb99ffcc;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  button#checkout:hover {
+    background: #7e3aff;
+    box-shadow: 0 0 30px #d0afffdd;
+  }
+
+  /* Responsive */
+  @media (max-width: 850px) {
+    aside#cart {
       position: fixed;
-      top: 0; right: 0;
-      width: 350px;
-      max-width: 100vw;
-      height: 100vh;
-      background: white;
-      box-shadow: -3px 0 10px rgb(0 0 0 / 0.15);
-      transform: translateX(100%);
-      transition: transform 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      z-index: 110;
-      padding: 1rem;
-    }
-    #cart-sidebar.open {
-      transform: translateX(0);
-    }
-    #cart-sidebar h2 {
-      margin-bottom: 1rem;
-      font-weight: 700;
-      color: #6b4226;
-      border-bottom: 2px solid #c68c53;
-      padding-bottom: 0.5rem;
-    }
-    #cart-items {
-      flex-grow: 1;
-      overflow-y: auto;
-    }
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #eee;
-      padding: 0.5rem 0;
-      font-size: 0.9rem;
-    }
-    .cart-item .info {
-      flex: 1;
-    }
-    .cart-item .name {
-      font-weight: 600;
-      color: #6b4226;
-    }
-    .cart-item .quantity {
-      margin: 0 0.5rem;
-      font-weight: 600;
-    }
-    .cart-item .price {
-      font-weight: 700;
-      color: #c68c53;
-      min-width: 60px;
-      text-align: right;
-    }
-    .cart-item button.remove-item {
-      background: none;
-      border: none;
-      color: #a5632a;
-      font-size: 1.1rem;
-      cursor: pointer;
-    }
-    #cart-total {
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: #6b4226;
-      text-align: right;
-      margin: 1rem 0;
-    }
-    #checkout-btn {
-      background-color: #c68c53;
-      border: none;
-      color: white;
-      padding: 0.9rem;
-      font-weight: 700;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+      bottom: 0;
+      right: 0;
       width: 100%;
+      max-height: 50vh;
+      border-radius: 20px 20px 0 0;
+      padding: 15px 20px;
     }
-    #checkout-btn:hover {
-      background-color: #a5632a;
-    }
-
-    /* --- FOOTER --- */
-    footer {
-      text-align: center;
-      padding: 1rem 0;
-      font-size: 0.9rem;
-      color: #999;
-      background: #fff;
-      margin-top: auto;
-    }
-
-    /* Responsive */
-    @media(max-width: 768px) {
-      main {
-        grid-template-columns: 1fr 1fr;
-      }
-      #cart-sidebar {
-        width: 100vw;
-      }
-    }
-    @media(max-width: 480px) {
-      main {
-        grid-template-columns: 1fr;
-      }
-      nav {
-        flex-wrap: wrap;
-      }
-    }
-  </style>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  }
+</style>
 </head>
 <body>
 
 <header>
-  <nav aria-label="Menu principal">
-    <button class="menu-btn active" data-category="all">Toutes</button>
-    <button class="menu-btn" data-category="espoir">Lueur d’Espoir</button>
-    <button class="menu-btn" data-category="amour">Lueur d’Amour</button>
-    <button class="menu-btn" data-category="serenite">Lueur de Sérénité</button>
-    <button class="menu-btn" data-category="confiance">Lueur de Confiance</button>
-    <button class="menu-btn" data-category="guerison">Lueur de Guérison</button>
-    <button class="menu-btn" data-category="intuition">Lueur d’Intuition</button>
-    <button class="menu-btn" data-category="inspiration">Lueur d’Inspiration</button>
-    <button class="menu-btn" data-category="ame">Lueur d’Âme</button>
+  <nav>
+    <ul id="categories">
+      <li class="active" data-category="all">Toutes</li>
+      <li data-category="espoir">Lueur d’Espoir</li>
+      <li data-category="amour">Lueur d’Amour</li>
+      <li data-category="serenite">Lueur de Sérénité</li>
+      <li data-category="confiance">Lueur de Confiance</li>
+      <li data-category="guerison">Lueur de Guérison</li>
+      <li data-category="intuition">Lueur d’Intuition</li>
+      <li data-category="inspiration">Lueur d’Inspiration</li>
+      <li data-category="ame">Lueur d’Âme</li>
+    </ul>
   </nav>
-  <div class="logo" aria-label="Logo Lueurs d'Âmes">Lueurs d'Âmes</div>
-  <div class="header-icons">
-    <button id="search-toggle" class="icon-button" aria-label="Recherche">
-      🔍
-    </button>
-    <div id="search-container" class="collapsed">
-      <input type="search" id="search-input" placeholder="Recherche..." aria-label="Recherche des produits" />
-    </div>
-    <button id="user-btn" class="icon-button" aria-label="Compte utilisateur" title="Compte utilisateur">👤</button>
-    <button id="cart-btn" class="icon-button" aria-label="Voir le panier" title="Voir le panier">
-      🛒 <span id="cart-count" class="badge" style="display:none;">0</span>
-    </button>
+  <div class="logo">Lueurs d'Âmes</div>
+  <div class="icons">
+    <button class="icon-btn" id="search-btn" title="Recherche 🔍">🔮</button>
+    <button class="icon-btn" id="account-btn" title="Compte utilisateur">🧙‍♂️</button>
+    <button class="icon-btn" id="cart-btn" title="Voir le panier">🛒<span id="cart-count" style="display:none;"></span></button>
+  </div>
+  <div id="search-bar">
+    <input type="text" id="search-input" placeholder="Recherche mystique..." autocomplete="off" />
   </div>
 </header>
 
-<main id="products-container" aria-live="polite" aria-label="Liste des bougies à messages">
-  <!-- Produits injectés ici -->
+<main>
+  <div class="products" id="product-list"></div>
 </main>
 
-<!-- Sidebar Panier -->
-<aside id="cart-sidebar" aria-label="Panier d'achat" role="region" aria-hidden="true">
-  <h2>Votre panier</h2>
+<aside id="cart">
+  <h2>Panier magique</h2>
   <div id="cart-items"></div>
-  <div id="cart-total">Total : 0 €</div>
-  <button id="checkout-btn" disabled>Payer</button>
+  <div class="cart-total">Total: €<span id="cart-total">0.00</span></div>
+  <button id="checkout">Payer</button>
 </aside>
 
-<footer>
-  © 2025 Lueurs d'Âmes — Tous droits réservés
-</footer>
-
 <script>
-  // Données produits
+  // Données produits avec images et détails mystiques
   const products = [
     {
-      id: "espoir",
+      id: 1,
       name: "Lueur d’Espoir",
-      desc: "Une bougie pour les moments de doute, offrant une lumière intérieure et un message d'encouragement.",
-      price: 15,
       category: "espoir",
-    },
-    {
-      id: "amour",
-      name: "Lueur d’Amour",
-      desc: "Destinée à raviver les relations, cette bougie diffuse une énergie chaleureuse et un message d'affection.",
-      price: 18,
-      category: "amour",
-    },
-    {
-      id: "serenite",
-      name: "Lueur de Sérénité",
-      desc: "Parfaite pour les instants de méditation, elle apporte calme et équilibre, accompagnée d'un message apaisant.",
-      price: 17,
-      category: "serenite",
-    },
-    {
-      id: "confiance",
-      name: "Lueur de Confiance",
-      desc: "Pour renforcer la confiance en soi, cette bougie inspire courage et détermination, avec un message motivant.",
+      description: "Une bougie pour les moments de doute, offrant une lumière intérieure et un message d'encouragement.",
       price: 20,
-      category: "confiance",
+      parfum: "Notes d'agrumes et de menthe poivrée",
+      image: "https://i.ibb.co/3pB6FxM/lueur-espoir.png"
     },
     {
-      id: "guerison",
-      name: "Lueur de Guérison",
-      desc: "Idéale pour les périodes de transition, elle offre un message de guérison et de renouveau.",
-      price: 19,
-      category: "guerison",
+      id: 2,
+      name: "Lueur d’Amour",
+      category: "amour",
+      description: "Destinée à raviver les relations, cette bougie diffuse une énergie chaleureuse et un message d'affection.",
+      price: 22,
+      parfum: "Rose et vanille",
+      image: "https://i.ibb.co/6ZZHVqz/lueur-amour.png"
     },
     {
-      id: "intuition",
-      name: "Lueur d’Intuition",
-      desc: "Encourage l'écoute de son intuition, avec un message guidant vers la sagesse intérieure.",
+      id: 3,
+      name: "Lueur de Sérénité",
+      category: "serenite",
+      description: "Une ambiance calme et apaisante pour le corps et l'esprit.",
       price: 18,
-      category: "intuition",
+      parfum: "Lavande et camomille",
+      image: "https://i.ibb.co/XYxTQYz/lueur-serenite.png"
     },
     {
-      id: "inspiration",
-      name: "Lueur d’Inspiration",
-      desc: "Pour stimuler la créativité, cette bougie diffuse une énergie inspirante et un message de découverte.",
+      id: 4,
+      name: "Lueur de Confiance",
+      category: "confiance",
+      description: "Renforce votre assurance avec cette bougie énergisante.",
       price: 21,
-      category: "inspiration",
+      parfum: "Bois de santal et jasmin",
+      image: "https://i.ibb.co/bJHPVTc/lueur-confiance.png"
     },
     {
-      id: "ame",
-      name: "Lueur d’Âme",
-      desc: "La bougie phare, offrant un message profond et spirituel, invitant à la réflexion personnelle.",
-      price: 25,
-      category: "ame",
+      id: 5,
+      name: "Lueur de Guérison",
+      category: "guerison",
+      description: "Favorise le bien-être et la récupération intérieure.",
+      price: 24,
+      parfum: "Eucalyptus et menthe",
+      image: "https://i.ibb.co/qpHLsqV/lueur-guerison.png"
     },
+    {
+      id: 6,
+      name: "Lueur d’Intuition",
+      category: "intuition",
+      description: "Éveillez votre sixième sens et votre sagesse intérieure.",
+      price: 23,
+      parfum: "Encens et myrrhe",
+      image: "https://i.ibb.co/7Q1jZqk/lueur-intuition.png"
+    },
+    {
+      id: 7,
+      name: "Lueur d’Inspiration",
+      category: "inspiration",
+      description: "Idéale pour stimuler la créativité et la motivation.",
+      price: 19,
+      parfum: "Orange douce et cannelle",
+      image: "https://i.ibb.co/F7pmZTD/lueur-inspiration.png"
+    },
+    {
+      id: 8,
+      name: "Lueur d’Âme",
+      category: "ame",
+      description: "La bougie sacrée pour élever l'esprit et nourrir l'âme.",
+      price: 25,
+      parfum: "Fleur de lotus et jasmin",
+      image: "https://i.ibb.co/m9Q9H4Q/lueur-ame.png"
+    }
   ];
 
-  let cart = {};
+  // Panier en localStorage ou vide
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-  // Affichage des produits filtrés par catégorie
-  const productsContainer = document.getElementById("products-container");
-  const menuButtons = document.querySelectorAll("nav button.menu-btn");
+  // Éléments DOM
+  const productList = document.getElementById('product-list');
+  const cartBtn = document.getElementById('cart-btn');
+  const cartCount = document.getElementById('cart-count');
+  const cartSidebar = document.getElementById('cart');
+  const cartItemsContainer = document.getElementById('cart-items');
+  const cartTotalEl = document.getElementById('cart-total');
+  const checkoutBtn = document.getElementById('checkout');
+  const searchBtn = document.getElementById('search-btn');
+  const searchBar = document.getElementById('search-bar');
+  const searchInput = document.getElementById('search-input');
+  const categories = document.querySelectorAll('#categories li');
 
-  function renderProducts(filter = "all") {
-    productsContainer.innerHTML = "";
-    const filtered = filter === "all" ? products : products.filter(p => p.category === filter);
-    if(filtered.length === 0) {
-      productsContainer.innerHTML = "<p>Aucun produit trouvé.</p>";
+  // Afficher produits filtrés / recherchés
+  function displayProducts(filterCategory = 'all', searchTerm = '') {
+    productList.innerHTML = '';
+    let filtered = products;
+
+    if (filterCategory !== 'all') {
+      filtered = filtered.filter(p => p.category === filterCategory);
+    }
+
+    if (searchTerm.trim() !== '') {
+      const term = searchTerm.toLowerCase();
+      filtered = filtered.filter(p =>
+        p.name.toLowerCase().includes(term) || p.description.toLowerCase().includes(term)
+      );
+    }
+
+    if (filtered.length === 0) {
+      productList.innerHTML = '<p style="grid-column: 1/-1; text-align:center; font-style: italic;">Aucun produit trouvé.</p>';
       return;
     }
-    filtered.forEach(p => {
-      const card = document.createElement("div");
-      card.className = "product-card";
-      card.innerHTML = `
-        <div class="product-name">${p.name}</div>
-        <div class="product-desc">${p.desc}</div>
-        <div class="product-price">${p.price.toFixed(2)} €</div>
-        <div class="quantity-controls">
-          <button class="qty-decrease" aria-label="Réduire quantité">−</button>
-          <span class="qty-value" aria-live="polite" aria-atomic="true">1</span>
-          <button class="qty-increase" aria-label="Augmenter quantité">+</button>
+
+    filtered.forEach(product => {
+      const productEl = document.createElement('div');
+      productEl.className = 'product';
+      productEl.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" />
+        <h3>${product.name}</h3>
+        <p class="desc">${product.description}</p>
+        <p class="parfum"><em>Parfum: ${product.parfum}</em></p>
+        <p class="price">€${product.price.toFixed(2)}</p>
+        <div class="quantity-control">
+          <label for="qty-${product.id}">Qté:</label>
+          <input type="number" id="qty-${product.id}" min="1" value="1" />
         </div>
-        <button class="add-to-cart">Ajouter au panier</button>
+        <button class="add-to-cart" data-id="${product.id}">Ajouter au panier</button>
       `;
-      productsContainer.appendChild(card);
+      productList.appendChild(productEl);
+    });
 
-      const qtyDecreaseBtn = card.querySelector(".qty-decrease");
-      const qtyIncreaseBtn = card.querySelector(".qty-increase");
-      const qtyValue = card.querySelector(".qty-value");
-      const addToCartBtn = card.querySelector(".add-to-cart");
-
-      let quantity = 1;
-      qtyDecreaseBtn.addEventListener("click", () => {
-        if(quantity > 1) {
-          quantity--;
-          qtyValue.textContent = quantity;
-        }
-      });
-      qtyIncreaseBtn.addEventListener("click", () => {
-        quantity++;
-        qtyValue.textContent = quantity;
-      });
-
-      addToCartBtn.addEventListener("click", () => {
-        addToCart(p.id, quantity);
-      });
+    // Ajouter gestionnaires d’événement boutons "Ajouter au panier"
+    document.querySelectorAll('.add-to-cart').forEach(btn => {
+      btn.onclick = () => {
+        const id = parseInt(btn.dataset.id);
+        const qtyInput = document.getElementById('qty-' + id);
+        let qty = parseInt(qtyInput.value);
+        if (qty < 1) qty = 1;
+        addToCart(id, qty);
+      };
     });
   }
 
-  // Filtrage menu
-  menuButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      menuButtons.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      renderProducts(btn.dataset.category);
-    });
-  });
+  // Ajouter produit au panier
+  function addToCart(id, qty) {
+    const product = products.find(p => p.id === id);
+    if (!product) return;
 
-  renderProducts();
-
-  // Gestion panier
-  const cartBtn = document.getElementById("cart-btn");
-  const cartSidebar = document.getElementById("cart-sidebar");
-  const cartItemsContainer = document.getElementById("cart-items");
-  const cartCountBadge = document.getElementById("cart-count");
-  const cartTotalEl = document.getElementById("cart-total");
-  const checkoutBtn = document.getElementById("checkout-btn");
-
-  cartBtn.addEventListener("click", () => {
-    cartSidebar.classList.toggle("open");
-    cartSidebar.setAttribute("aria-hidden", !cartSidebar.classList.contains("open"));
-  });
-
-  function updateCartUI() {
-    const items = Object.entries(cart);
-    cartItemsContainer.innerHTML = "";
-    if(items.length === 0) {
-      cartItemsContainer.innerHTML = "<p>Votre panier est vide.</p>";
-      cartCountBadge.style.display = "none";
-      checkoutBtn.disabled = true;
-      cartTotalEl.textContent = "Total : 0 €";
-      return;
-    }
-    let total = 0;
-    let totalQty = 0;
-
-    items.forEach(([productId, quantity]) => {
-      const product = products.find(p => p.id === productId);
-      const lineTotal = product.price * quantity;
-      total += lineTotal;
-      totalQty += quantity;
-
-      const itemDiv = document.createElement("div");
-      itemDiv.className = "cart-item";
-      itemDiv.innerHTML = `
-        <div class="info">
-          <div class="name">${product.name}</div>
-          <div>Quantité: <strong>${quantity}</strong></div>
-        </div>
-        <div class="price">${lineTotal.toFixed(2)} €</div>
-        <button aria-label="Supprimer ${product.name}" class="remove-item">×</button>
-      `;
-      cartItemsContainer.appendChild(itemDiv);
-
-      itemDiv.querySelector(".remove-item").addEventListener("click", () => {
-        delete cart[productId];
-        updateCartUI();
-      });
-    });
-    cartCountBadge.textContent = totalQty;
-    cartCountBadge.style.display = totalQty > 0 ? "inline-block" : "none";
-    cartTotalEl.textContent = `Total : ${total.toFixed(2)} €`;
-    checkoutBtn.disabled = false;
-  }
-
-  function addToCart(productId, quantity) {
-    if(cart[productId]) {
-      cart[productId] += quantity;
+    const existing = cart.find(item => item.id === id);
+    if (existing) {
+      existing.qty += qty;
     } else {
-      cart[productId] = quantity;
+      cart.push({ id, qty });
     }
-    updateCartUI();
+    saveCart();
+    updateCartCount();
+    renderCart();
+    alert(`✨ ${qty} x ${product.name} ajouté(s) au panier !`);
   }
 
-  updateCartUI();
+  // Sauvegarder panier en localStorage
+  function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
 
-  // Paiement Stripe
-  checkoutBtn.addEventListener("click", () => {
-    if(Object.keys(cart).length === 0) return alert("Votre panier est vide.");
-    
-    // Préparer les données pour l'API backend
-    const line_items = Object.entries(cart).map(([productId, quantity]) => {
-      const product = products.find(p => p.id === productId);
-      return {
-        price_data: {
-          currency: "eur",
-          product_data: { name: product.name },
-          unit_amount: product.price * 100, // en centimes
-        },
-        quantity,
+  // Mettre à jour compteur panier
+  function updateCartCount() {
+    const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
+    if (totalQty > 0) {
+      cartCount.style.display = 'inline-block';
+      cartCount.textContent = totalQty;
+    } else {
+      cartCount.style.display = 'none';
+    }
+  }
+
+  // Afficher contenu panier
+  function renderCart() {
+    cartItemsContainer.innerHTML = '';
+    if (cart.length === 0) {
+      cartItemsContainer.innerHTML = '<p>Votre panier est vide.</p>';
+      cartTotalEl.textContent = '0.00';
+      return;
+    }
+
+    let total = 0;
+    cart.forEach(item => {
+      const product = products.find(p => p.id === item.id);
+      if (!product) return;
+
+      const itemTotal = product.price * item.qty;
+      total += itemTotal;
+
+      const itemEl = document.createElement('div');
+      itemEl.className = 'cart-item';
+      itemEl.innerHTML = `
+        <div class="cart-item-name">${product.name}</div>
+        <input class="cart-item-qty" type="number" min="1" value="${item.qty}" data-id="${item.id}" title="Modifier la quantité" />
+        <div class="cart-item-price">€${itemTotal.toFixed(2)}</div>
+        <button class="remove-btn" data-id="${item.id}" title="Retirer">❌</button>
+      `;
+      cartItemsContainer.appendChild(itemEl);
+    });
+
+    cartTotalEl.textContent = total.toFixed(2);
+
+    // Gestion changement quantité
+    document.querySelectorAll('.cart-item-qty').forEach(input => {
+      input.onchange = e => {
+        let val = parseInt(e.target.value);
+        if (isNaN(val) || val < 1) val = 1;
+        const id = parseInt(e.target.dataset.id);
+        updateQty(id, val);
       };
     });
 
-    fetch("/api/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ line_items }),
-    })
-    .then(res => res.json())
-    .then(data => {
-      if(data.url) {
-        window.location.href = data.url; // redirection Stripe Checkout
-      } else {
-        alert("Erreur lors du paiement, veuillez réessayer.");
-      }
-    })
-    .catch(() => alert("Erreur réseau, veuillez réessayer."));
-  });
+    // Boutons retirer article
+    document.querySelectorAll('.remove-btn').forEach(btn => {
+      btn.onclick = () => {
+        const id = parseInt(btn.dataset.id);
+        removeFromCart(id);
+      };
+    });
+  }
 
-  // Recherche déployante
-  const searchToggle = document.getElementById("search-toggle");
-  const searchContainer = document.getElementById("search-container");
-  const searchInput = document.getElementById("search-input");
+  function updateQty(id, qty) {
+    const item = cart.find(i => i.id === id);
+    if (item) {
+      item.qty = qty;
+      saveCart();
+      updateCartCount();
+      renderCart();
+    }
+  }
 
-  searchToggle.addEventListener("click", () => {
-    const collapsed = searchContainer.classList.toggle("collapsed");
-    if(!collapsed) {
+  function removeFromCart(id) {
+    cart = cart.filter(i => i.id !== id);
+    saveCart();
+    updateCartCount();
+    renderCart();
+  }
+
+  // Toggle affichage panier
+  cartBtn.onclick = () => {
+    if (cartSidebar.style.display === 'block') {
+      cartSidebar.style.display = 'none';
+    } else {
+      cartSidebar.style.display = 'block';
+      renderCart();
+    }
+  };
+
+  // Toggle barre recherche
+  searchBtn.onclick = () => {
+    if (searchBar.style.display === 'block') {
+      searchBar.style.display = 'none';
+      searchInput.value = '';
+      displayProducts(getActiveCategory());
+    } else {
+      searchBar.style.display = 'block';
       searchInput.focus();
     }
+  };
+
+  // Recherche dynamique
+  searchInput.oninput = () => {
+    const term = searchInput.value;
+    displayProducts(getActiveCategory(), term);
+  };
+
+  // Gestion catégories
+  categories.forEach(li => {
+    li.onclick = () => {
+      categories.forEach(c => c.classList.remove('active'));
+      li.classList.add('active');
+      displayProducts(li.dataset.category, searchInput.value);
+    };
   });
 
-  searchInput.addEventListener("input", () => {
-    const query = searchInput.value.toLowerCase();
-    const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query));
-    productsContainer.innerHTML = "";
-    if(filtered.length === 0) {
-      productsContainer.innerHTML = "<p>Aucun produit ne correspond à votre recherche.</p>";
+  // Obtenir catégorie active
+  function getActiveCategory() {
+    const active = document.querySelector('#categories li.active');
+    return active ? active.dataset.category : 'all';
+  }
+
+  // Simuler paiement Stripe (simple alert)
+  checkoutBtn.onclick = () => {
+    if (cart.length === 0) {
+      alert('Votre panier est vide, ajoutez des produits avant de payer.');
       return;
     }
-    filtered.forEach(p => {
-      const card = document.createElement("div");
-      card.className = "product-card";
-      card.innerHTML = `
-        <div class="product-name">${p.name}</div>
-        <div class="product-desc">${p.desc}</div>
-        <div class="product-price">${p.price.toFixed(2)} €</div>
-        <div class="quantity-controls">
-          <button class="qty-decrease" aria-label="Réduire quantité">−</button>
-          <span class="qty-value" aria-live="polite" aria-atomic="true">1</span>
-          <button class="qty-increase" aria-label="Augmenter quantité">+</button>
-        </div>
-        <button class="add-to-cart">Ajouter au panier</button>
-      `;
-      productsContainer.appendChild(card);
 
-      let quantity = 1;
-      const qtyDecreaseBtn = card.querySelector(".qty-decrease");
-      const qtyIncreaseBtn = card.querySelector(".qty-increase");
-      const qtyValue = card.querySelector(".qty-value");
-      const addToCartBtn = card.querySelector(".add-to-cart");
+    // Simuler paiement
+    alert('Paiement simulé réussi ! Merci pour votre commande mystique. 🌟');
 
-      qtyDecreaseBtn.addEventListener("click", () => {
-        if(quantity > 1) {
-          quantity--;
-          qtyValue.textContent = quantity;
-        }
-      });
-      qtyIncreaseBtn.addEventListener("click", () => {
-        quantity++;
-        qtyValue.textContent = quantity;
-      });
+    // Vider panier
+    cart = [];
+    saveCart();
+    updateCartCount();
+    renderCart();
+    cartSidebar.style.display = 'none';
+  };
 
-      addToCartBtn.addEventListener("click", () => {
-        addToCart(p.id, quantity);
-      });
-    });
-  });
+  // Au chargement afficher tous produits et compte à jour
+  displayProducts();
+  updateCartCount();
 
-  // Bouton utilisateur -> page compte
-  document.getElementById("user-btn").addEventListener("click", () => {
-    window.location.href = "compte.html";
-  });
 </script>
-
 </body>
 </html>
