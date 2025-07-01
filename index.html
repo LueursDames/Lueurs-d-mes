@@ -1,49 +1,412 @@
-import Stripe from 'stripe';
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lueur d’Âmes - Boutique de Bougies</title>
+  <style>
+    /* Reset simple */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    body {
+      background: #2e1a47; /* violet profond */
+      color: #f2e9f7; /* clair, douceur */
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-export default async function handler(req, res) {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', 'https://lueursdames.github.io'); // ton frontend exact
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #3c2870;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
+    /* Menu déroulant catégorie */
+    .menu-categories {
+      position: relative;
+    }
+    .menu-categories select {
+      padding: 0.4rem 1rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      background: #5a4099;
+      color: #f2e9f7;
+      cursor: pointer;
+    }
+    .menu-categories select:hover {
+      background: #7a56d1;
+    }
 
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST, OPTIONS');
-    res.status(405).end('Method Not Allowed');
-    return;
-  }
+    /* Icones compte + panier */
+    .header-icons {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      position: relative;
+    }
+    .header-icons .icon {
+      color: #d6b8ff;
+      position: relative;
+    }
+    /* Badge compteur panier */
+    .header-icons .icon.cart::after {
+      content: attr(data-count);
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background: #ff4081;
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 50%;
+      display: none;
+    }
+    .header-icons .icon.cart[data-count]:not([data-count="0"])::after {
+      display: block;
+    }
 
-  try {
-    const { product, amount } = req.body;
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [
-        {
-          price_data: {
-            currency: 'eur',
-            product_data: {
-              name: product || 'Bougie mystique',
-            },
-            unit_amount: amount || 2000,
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .product-card {
+      background: #462f85;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .product-name {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+      color: #c8a2ff;
+    }
+
+    .product-desc {
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+      line-height: 1.3;
+      color: #ddd6ff;
+    }
+
+    .product-scent {
+      font-style: italic;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      color: #b9a1ff;
+    }
+
+    .quantity-wrapper {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .quantity-wrapper input {
+      width: 50px;
+      padding: 0.3rem;
+      border-radius: 6px;
+      border: none;
+      text-align: center;
+      font-size: 1rem;
+      margin-left: 0.5rem;
+    }
+
+    .add-to-cart-btn {
+      background: #9a6cff;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      padding: 0.8rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+    }
+    .add-to-cart-btn:hover {
+      background: #bb8cff;
+    }
+
+    /* Popup message d'erreur ou succès */
+    #message {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #7e56d1cc;
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      z-index: 2000;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="menu-categories">
+      <select id="categorySelect">
+        <option value="lueur">Gamme Lueur d’Âmes</option>
+        <!-- Plus tard tu peux ajouter d'autres options -->
+      </select>
+    </div>
+    <div class="header-icons">
+      <div class="icon account" title="Mon compte" aria-label="Mon compte">
+        👤
+      </div>
+      <div class="icon cart" title="Panier" aria-label="Panier" data-count="0" id="cartCount">
+        🛒
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="products-grid" id="productsGrid">
+      <!-- Les produits seront injectés ici -->
+    </div>
+  </main>
+
+  <div id="message"></div>
+
+  <script>
+    // URL de ton backend Vercel (remplace par ta vraie URL)
+    const BACKEND_URL = 'https://stripe-backend-8jzac1158-lueurs-dames-projects.vercel.app';
+
+    // Données produits complètes
+    const products = [
+      {
+        id: "lueur-espoir",
+        name: "Lueur d’Espoir",
+        desc: "Une bougie pour les moments de doute, offrant une lumière intérieure et un message d'encouragement.",
+        scent: "Notes d'agrumes et de menthe poivrée pour une sensation de fraîcheur et de renouveau.",
+        price_cents: 1500 // en centimes (15€)
+      },
+      {
+        id: "lueur-amour",
+        name: "Lueur d’Amour",
+        desc: "Destinée à raviver les relations, cette bougie diffuse une énergie chaleureuse et un message d'affection.",
+        scent: "Rose et vanille, pour une ambiance chaleureuse et romantique.",
+        price_cents: 1600
+      },
+      {
+        id: "lueur-serenite",
+        name: "Lueur de Sérénité",
+        desc: "Parfaite pour les instants de méditation, elle apporte calme et équilibre, accompagnée d'un message apaisant.",
+        scent: "Lavande et bois de santal, favorisant la relaxation.",
+        price_cents: 1550
+      },
+      {
+        id: "lueur-confiance",
+        name: "Lueur de Confiance",
+        desc: "Pour renforcer la confiance en soi, cette bougie inspire courage et détermination, avec un message motivant.",
+        scent: "Bois de cèdre et musc, pour une touche de force et de stabilité.",
+        price_cents: 1650
+      },
+      {
+        id: "lueur-guerison",
+        name: "Lueur de Guérison",
+        desc: "Idéale pour les périodes de transition, elle offre un message de guérison et de renouveau.",
+        scent: "Camomille et eucalyptus, pour apaiser et purifier l'esprit.",
+        price_cents: 1580
+      },
+      {
+        id: "lueur-intuition",
+        name: "Lueur d’Intuition",
+        desc: "Encourage l'écoute de son intuition, avec un message guidant vers la sagesse intérieure.",
+        scent: "Patchouli et jasmin, stimulant l'esprit et la créativité.",
+        price_cents: 1620
+      },
+      {
+        id: "lueur-inspiration",
+        name: "Lueur d’Inspiration",
+        desc: "Pour stimuler la créativité, cette bougie diffuse une énergie inspirante et un message de découverte.",
+        scent: "Fleur d'oranger et ylang-ylang, pour une ambiance florale et stimulante.",
+        price_cents: 1600
+      },
+      {
+        id: "lueur-ame",
+        name: "Lueur d’Âme",
+        desc: "La bougie phare, offrant un message profond et spirituel, invitant à la réflexion personnelle.",
+        scent: "Encens et myrrhe, pour une expérience spirituelle profonde.",
+        price_cents: 1700
+      },
+    ];
+
+    // Affichage des produits
+    const productsGrid = document.getElementById('productsGrid');
+    const cartCount = document.getElementById('cartCount');
+    const messageDiv = document.getElementById('message');
+
+    // Récupérer panier en localStorage ou init vide
+    let cart = JSON.parse(localStorage.getItem('cart')) || {};
+
+    // Met à jour le badge panier
+    function updateCartCount() {
+      const totalCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
+      cartCount.setAttribute('data-count', totalCount);
+    }
+
+    // Affiche message temporaire
+    function showMessage(msg, duration = 3000) {
+      messageDiv.textContent = msg;
+      messageDiv.style.display = 'block';
+      setTimeout(() => {
+        messageDiv.style.display = 'none';
+      }, duration);
+    }
+
+    // Crée une carte produit HTML
+    function createProductCard(product) {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+
+      card.innerHTML = `
+        <div class="product-name">${product.name}</div>
+        <div class="product-desc">${product.desc}</div>
+        <div class="product-scent"><strong>Parfum :</strong> ${product.scent}</div>
+        <div class="quantity-wrapper">
+          <label for="qty-${product.id}">Quantité :</label>
+          <input type="number" id="qty-${product.id}" min="1" value="1" />
+        </div>
+        <button class="add-to-cart-btn">Ajouter au panier - ${ (product.price_cents / 100).toFixed(2) }€</button>
+      `;
+
+      // Ajout au panier
+      const btn = card.querySelector('.add-to-cart-btn');
+      const qtyInput = card.querySelector('input');
+
+      btn.addEventListener('click', () => {
+        const qty = parseInt(qtyInput.value);
+        if (isNaN(qty) || qty < 1) {
+          showMessage('Veuillez entrer une quantité valide.');
+          return;
+        }
+
+        if(cart[product.id]) {
+          cart[product.id].quantity += qty;
+        } else {
+          cart[product.id] = {
+            product,
+            quantity: qty
+          };
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        showMessage(`Ajouté ${qty} x ${product.name} au panier !`);
+      });
+
+      return card;
+    }
+
+    // Affiche tous les produits
+    function displayProducts() {
+      productsGrid.innerHTML = '';
+      products.forEach(p => {
+        productsGrid.appendChild(createProductCard(p));
+      });
+    }
+
+    // Achat complet : on récupère le panier, on construit l'objet à envoyer backend Stripe
+    async function checkout() {
+      if (Object.keys(cart).length === 0) {
+        showMessage('Votre panier est vide !');
+        return;
+      }
+
+      // Construire lignes d’items Stripe
+      const line_items = Object.values(cart).map(item => ({
+        price_data: {
+          currency: 'eur',
+          product_data: {
+            name: item.product.name,
+            description: item.product.desc,
           },
-          quantity: 1,
+          unit_amount: item.product.price_cents,
         },
-      ],
-      mode: 'payment',
-      success_url: 'https://lueursdames.github.io/success.html',
-      cancel_url: 'https://lueursdames.github.io/cancel.html',
-    });
+        quantity: item.quantity,
+      }));
 
-    res.status(200).json({ url: session.url });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Erreur serveur, veuillez réessayer.' });
-  }
-}
+      try {
+        const response = await fetch(BACKEND_URL + '/api/create-checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ line_items }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Erreur serveur');
+        }
+
+        const data = await response.json();
+        if(data.url) {
+          window.location.href = data.url;
+        } else {
+          showMessage('Erreur lors de la création du paiement. Veuillez réessayer.');
+        }
+      } catch (error) {
+        showMessage('Erreur lors de la création du paiement. Veuillez réessayer.');
+        console.error(error);
+      }
+    }
+
+    // Ajoute un bouton d’achat flottant (au bas à droite)
+    function addCheckoutButton() {
+      const btn = document.createElement('button');
+      btn.textContent = 'Passer à la caisse';
+      btn.style.position = 'fixed';
+      btn.style.bottom = '20px';
+      btn.style.right = '20px';
+      btn.style.background = '#bb8cff';
+      btn.style.color = '#2e1a47';
+      btn.style.padding = '1rem 1.5rem';
+      btn.style.border = 'none';
+      btn.style.borderRadius = '12px';
+      btn.style.fontWeight = '700';
+      btn.style.fontSize = '1.1rem';
+      btn.style.cursor = 'pointer';
+      btn.style.boxShadow = '0 4px 12px rgba(187,140,255,0.7)';
+      btn.style.zIndex = '1500';
+
+      btn.addEventListener('click', checkout);
+
+      document.body.appendChild(btn);
+    }
+
+    // Initialisation
+    displayProducts();
+    updateCartCount();
+    addCheckoutButton();
+  </script>
+</body>
+</html>
